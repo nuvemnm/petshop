@@ -4,7 +4,8 @@ def home_page(page: ft.Page):
     return ft.Column(
         [
             ft.Text("Página Inicial", size=30),
-            ft.ElevatedButton("Ir para Página 2", on_click=lambda _: page.go("/page2")),
+            ft.ElevatedButton("Login", on_click=lambda _: page.go("/page2")),    
+            ft.ElevatedButton("Cadastrar", on_click=lambda _: page.go("/page2")),    
         ]
     )
 
