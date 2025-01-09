@@ -1,2 +1,2 @@
-type,name,sex,race,birth,weight
-cachorro,freio a disco,macho,pinscher,04/03/2020,12
+type,name,sex,castrated,race,birth,weight
+cachorro,freio a disco,macho,1,pinscher,04/03/2020,12
