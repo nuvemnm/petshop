@@ -1,16 +1,18 @@
 from flet import *
+from user import User
 import csv
 
 class Login(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
+        self.user = User()
 
         self.title = Text("Insira seu nome de usuário e senha")
 
         #campos de texto
-        self.name = TextField(label = "nome de usuário", width = 300)
-        self.password = TextField(label = "senha", width = 300)
+        self.user.name = TextField(label = "nome de usuário", width = 300)
+        self.user.password = TextField(label = "senha", width = 300)
 
         #buttons
         self.login = ElevatedButton(text="Avançar", on_click = self.verify_data) 
@@ -21,8 +23,8 @@ class Login(UserControl):
             content = Column(
                 controls=[
                     self.title,
-                    self.name,
-                    self.password,
+                    self.user.name,
+                    self.user.password,
                     self.login,
                     self.back
                 ],
@@ -42,7 +44,7 @@ class Login(UserControl):
                 # Itera sobre cada linha do arquivo CSV
                 for linha in leitor:
                     # Garante que a linha tem pelo menos dois campos
-                    if len(linha) >= 2 and linha[0] == self.name.value and linha[1] == self.password.value:
+                    if len(linha) >= 2 and linha[0] == self.user.name.value and linha[1] == self.user.password.value:
                         self.page.go('/menu')
 
             return False  # Retorna False se o par (nome, senha) não for encontrado
