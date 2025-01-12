@@ -1,14 +1,23 @@
-import flet as ft
+from flet import *
 
-class Home:
+class Home(UserControl):
     def __init__(self, page):
+        super().__init__()
         self.page = page
 
     def build(self):
-        title = ft.Text("Página Inicial")
-        login = ft.ElevatedButton(text = 'Login', on_click = lambda _: self.page.go('/login'))  
-        register = ft.ElevatedButton(text = 'Cadastrar') 
-        out = ft.ElevatedButton(text = 'Sair') 
+        title = Text("Página Inicial")
+        login = ElevatedButton(text = 'Login', on_click = lambda _: self.page.go('/login'))  
+        register = ElevatedButton(text = 'Cadastrar') 
+        out = ElevatedButton(text = 'Sair') 
         
-        controls = [page.add(title, login, register, out)]
-        return controls
+        return Column(
+            controls=[
+                title,
+                login,
+                register,
+                out
+            ]
+        )
+
+    

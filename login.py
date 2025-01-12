@@ -1,13 +1,21 @@
-import flet as ft
+from flet import *
 
-class Login:
+class Login(UserControl):
     def __init__(self, page):
+        super().__init__()
         self.page = page
 
     def build(self):
-        title_login = ft.Text("Insira seu nome de usuário e senha")
-        name = ft.TextField(label = "nome de usuário", width = 300)
-        password = ft.TextField(label = "senha", width = 300)
-        button = ft.ElevatedButton(text="Avançar", on_click = lambda _: self.page.go('/')) 
+        title_login = Text("Insira seu nome de usuário e senha")
+        name = TextField(label = "nome de usuário", width = 300)
+        password = TextField(label = "senha", width = 300)
+        button = ElevatedButton(text="Avançar", on_click = lambda _: self.page.go('/')) 
         
-        return page.add(title_login, name, password, button)
+        return Column(
+            controls=[
+                title_login,
+                name,
+                password,
+                button
+            ]
+        )

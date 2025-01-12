@@ -1,18 +1,16 @@
-import flet as ft
+from flet import *
 from views import views_handler
 
-def main(page: ft.Page):
-
+def main(page: Page):
+    # Função chamada quando a rota muda
     def route_change(route):
         print(page.route)
         page.views.clear()
-        page.viwes.append(
-            views_handler(page)[page.route]
-        )
+        page.views.append(views_handler(page)[page.route])  # Corrigido "viwes" para "views"
+        page.update()
 
-        page.on_route_change = route_change
-        page.go("/")
+    # Configuração inicial
+    page.on_route_change = route_change
+    page.go('/')  # Define a página inicial como "/"
 
-    
-ft.app(target = main)
-            
+app(target=main)
