@@ -1,5 +1,6 @@
 class Animal:
-    def __init__(self, id_user = None, specie = None, name = None, sex = None, castrated = None, race = None, age = None, weight = None):
+    def __init__(self, id_pet = None, id_user = None, specie = None, name = None, sex = None, castrated = None, race = None, age = None, weight = None):
+        self.id_pet = id_pet
         self.id_user = id_user
         self.specie = specie
         self.name = name

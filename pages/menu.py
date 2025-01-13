@@ -1,5 +1,7 @@
 from flet import *
 import csv
+import pandas as pd
+from configs import *
 from classes.user import User
 from utils import load_user_from_session
 
@@ -38,22 +40,19 @@ class Menu(UserControl):
             alignment=alignment.center,  
         )
 
+
+
     
-    def verify_pet(self, e):
+    def verify_pet(self,e):
        
         try:
-            with open("csv\\animals.csv", mode='r', encoding='utf-8') as f:
-                reader = csv.reader(f)
-                
-                # Itera sobre cada linha do arquivo CSV
-                #next(reader)
-                for linha in reader:
-                    # Garante que a linha tem pelo menos dois campos
-                    if linha[0] == self.user.id_user:
-                        print(self.user.id_user)
-                        self.page.go('/pets')
-                    else:
-                        self.page.go('/pet_register')
+            pet_df = pd.read_csv(PETS_TABLE_PATH, delimiter=";")
+            print("Colunas do CSV:", pet_df.columns)
+            if pet_df.loc[pet_df["id_user"] == self.user.id_user].empty:
+                self.page.go('/pet_register')
+            else:
+                print("nao vazio")
+                self.page.go('/pets')
 
             return False  
         except FileNotFoundError:
