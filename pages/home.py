@@ -8,8 +8,12 @@ class Home(UserControl):
         self.title = Text("Página Inicial")
         self.login = ElevatedButton(text = 'Login', on_click = lambda _: self.page.go('/login'))  
         self.register = ElevatedButton(text = 'Cadastrar', on_click = lambda _: self.page.go('/register')) 
-        self.out = ElevatedButton(text = 'Sair') 
-    
+        self.out = ElevatedButton(text='Sair', on_click=self.close_app)    
+
+
+    def close_app(self, e):
+        self.page.window.close()
+
     def build(self):
         
         return Container(
