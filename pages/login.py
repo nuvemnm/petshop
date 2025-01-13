@@ -1,3 +1,4 @@
+import os
 from flet import *
 from classes.user import User
 import csv
@@ -36,9 +37,9 @@ class Login(UserControl):
 
     #Verifica se um par de valores (nome, senha) existe nos dois primeiros campos de um arquivo CSV.
     def verify_data(self, e):
-      
+        file_path = os.path.join("csv","users.csv")
         try:
-            with open("csv\\users.csv", mode='r', encoding='utf-8') as f:
+            with open(file_path, mode='r', encoding='utf-8') as f:
                 leitor = csv.reader(f)
                 
                 # Itera sobre cada linha do arquivo CSV
@@ -49,7 +50,7 @@ class Login(UserControl):
 
             return False  # Retorna False se o par (nome, senha) não for encontrado
         except FileNotFoundError:
-            print(f"Erro: Arquivo '{arquivo}' não encontrado.")
+            print(f"Erro: Arquivo '{os.path.basename(file_path)}' não encontrado.")
             return False
         except Exception as e:
             print(f"Erro ao ler o arquivo: {e}")
