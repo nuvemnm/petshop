@@ -70,7 +70,7 @@ class Register(UserControl):
         return (name in user_names)
 
     def get_current_id(self):
-        max_id = max(pd.read_csv(USERS_TABLE_PATH,sep=";")["id"].values)
+        max_id = max(pd.read_csv(USERS_TABLE_PATH,sep=";")["id_user"].values)
         return int(max_id)
     
     def notify_user(self,message):
