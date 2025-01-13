@@ -1,6 +1,6 @@
 from flet import *
 import csv
-from classes.animals import Animal  # Importando a classe Product
+from classes.animals import Animal  
 
 class Pets(UserControl):
     def __init__(self, page):
