@@ -10,6 +10,16 @@ class User:
         self.cpf = cpf
         self.address = address
 
+    # Getter e Setter para 'id_user'
+    @property
+    def id_user(self):
+        return self._id_user
+
+    @id_user.setter
+    def id_user(self, value: str):
+        self._id_user = value
+
+
     # Getter e Setter para 'name'
     @property
     def name(self):
@@ -19,7 +29,7 @@ class User:
     def name(self, value: str):
         if not value:
             raise ValueError("O nome é obrigatório")
-        if len(value) < 5:
+        if len(str(value)) < 5:
             raise ValueError("O nome deve ter pelo menos 5 caracteres.")
         self._name = value
 
@@ -33,7 +43,7 @@ class User:
         if not password:
             raise ValueError("A senha é obrigatória.")
         # Verifica se a senha tem pelo menos 8 caracteres
-        if len(password) < 8:
+        if len(str(password)) < 8:
             raise ValueError("A senha deve ter pelo menos 8 caracteres.")
 
         # Verifica se a senha contém pelo menos um símbolo
@@ -63,12 +73,12 @@ class User:
         return self._cpf
 
     @cpf.setter
-    def cpf(self, cpf):
+    def cpf(self, cpf : str):
         if not cpf:
             raise ValueError("O CPF é obrigatório.")
         
         # Verifica se o CPF tem exatamente 11 caracteres numéricos
-        if len(cpf) != 11 or not cpf.isdigit():
+        if len(str(cpf)) != 11 or not str(cpf).isdigit():
             raise ValueError("O CPF deve conter 11 dígitos.")
         self._cpf = cpf
 

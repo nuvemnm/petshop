@@ -2,7 +2,11 @@ import os
 from flet import *
 from classes.user import User
 from configs import USERS_TABLE_PATH
+from utils import save_user_to_session
+import pandas as pd
 import csv
+import warnings
+warnings.filterwarnings("ignore")
 
 class Login(UserControl):
     def __init__(self, page):
@@ -24,8 +28,8 @@ class Login(UserControl):
             content = Column(
                 controls=[
                     self.title,
-                    self.user.name,
-                    self.user.password,
+                    self.input_name,
+                    self.input_password,
                     self.login,
                     self.back
                 ],
@@ -38,14 +42,20 @@ class Login(UserControl):
     #Verifica se um par de valores (nome, senha) existe nos dois primeiros campos de um arquivo CSV.
     def verify_data(self, e):
         try:
-            with open(USERS_TABLE_PATH, mode='r', encoding='utf-8') as f:
-                leitor = csv.reader(f)
+            users = pd.read_csv(USERS_TABLE_PATH,sep=";")
+            user_match = users[(users["name"] == self.input_name.value) & (users["password"] == self.input_password.value)]
+            if not user_match.empty:
+                user_data = user_match.iloc[0]                
+                user = User(user_data["id_user"],
+                            user_data["name"],
+                            user_data["password"],
+                            user_data["email"],
+                            user_data["cpf"],
+                            user_data["address"])
                 
-                # Itera sobre cada linha do arquivo CSV
-                for linha in leitor:
-                    # Garante que a linha tem pelo menos dois campos
-                    if len(linha) >= 2 and linha[0] == self.user.name.value and linha[1] == self.user.password.value:
-                        self.page.go('/menu')
+                save_user_to_session(self.page,user)
+
+                self.page.go('/menu')
 
             return False  # Retorna False se o par (nome, senha) não for encontrado
         except FileNotFoundError:

@@ -57,19 +57,22 @@ class Register(UserControl):
             self.notify_user("O nome de usuário já está em uso.")
             return
         try:
-            user = User(self.input_name.value,self.input_password.value,self.input_email.value,self.input_cpf.value,self.input_address.value)
+            next_id = self.get_current_id() + 1
+
+            user = User(next_id,self.input_name.value,self.input_password.value,self.input_email.value,self.input_cpf.value,self.input_address.value)
             self.insert_data(user)
+
         except ValueError as ve:
             self.notify_user(ve)
 
     def is_name_taken(self, name):
-        user_names = pd.read_csv(USERS_TABLE_PATH,sep=";")
-        print(user_names)
-        print(user_names["name"].values)
+        user_names = pd.read_csv(USERS_TABLE_PATH,sep=";")["name"].values
+        return (name in user_names)
 
-        return (name in user_names["name"].values)
-
-
+    def get_current_id(self):
+        max_id = max(pd.read_csv(USERS_TABLE_PATH,sep=";")["id"].values)
+        return int(max_id)
+    
     def notify_user(self,message):
         dlg = AlertDialog(
             title=Text("Não foi possível criar sua conta"),
@@ -79,7 +82,7 @@ class Register(UserControl):
 
     #Insere uma linha de dados em um arquivo CSV no formato de string.
     def insert_data(self, user):
-        line = f"{user.name};{user.password};{user.email};{user.cpf};{user.address}"   
+        line = f"{user.id_user};{user.name};{user.password};{user.email};{user.cpf};{user.address}"   
 
         try:
             # Abre o arquivo em modo de anexar

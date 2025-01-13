@@ -1,13 +1,19 @@
 from flet import *
 import csv
 from classes.user import User
+from utils import load_user_from_session
 
 class Menu(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
 
-        self.user = User()
+        self.user = load_user_from_session(self.page)
+        self.user_name = Text(f"Olá,")
+
+        if(self.user):
+            self.user_name = Text(f"Olá, {self.user.name}")
+        
         self.title = Text("Menu Principal")
         self.shop = ElevatedButton(text = 'Loja', on_click = lambda _: self.page.go('/shop'))  
         self.myPets = ElevatedButton(text = 'Meus Pets', on_click = self.verify_pet)  
@@ -21,6 +27,7 @@ class Menu(UserControl):
         return Container(
             content=Column(
                 controls=[
+                    self.user_name,
                     self.title,
                     self.shop,
                     self.myPets,
