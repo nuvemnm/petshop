@@ -8,13 +8,12 @@ class Login(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.user = User()
 
         self.title = Text("Insira seu nome de usuário e senha")
 
         #campos de texto
-        self.user.name = TextField(label = "nome de usuário", width = 300,on_submit=self.verify_data)
-        self.user.password = TextField(label = "senha", width = 300, on_submit=self.verify_data)
+        self.input_name = TextField(label = "nome de usuário", width = 300,on_submit=self.verify_data)
+        self.input_password = TextField(label = "senha", width = 300, on_submit=self.verify_data)
 
         #buttons
         self.login = ElevatedButton(text="Avançar", on_click = self.verify_data) 
