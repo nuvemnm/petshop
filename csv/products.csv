@@ -1,2 +1,4 @@
-name, price, quantity, image
-biscoito, 12, 2, https://m.media-amazon.com/images/I/51kHk4xr-SL._AC_SX679_.jpg
+id_product;name;price;quantity;description;image
+0;biscoito;999;2;Um biscoito muito saboroso, seu pet vai amar!;https://m.media-amazon.com/images/I/51kHk4xr-SL._AC_SX679_.jpg
+1;brinquedo;20;1;Brinquedo de pelúcia da marca squeaky;https://cdn.leroymerlin.com.br/products/brinquedo_cachorro_madog_girafinha_pelucia_pet_elastica_1570433820_70ff_600x600.jpg
+2;brinquedo;20;1;Brinquedo de pelúcia da marca squeaky;https://cdn.leroymerlin.com.br/products/brinquedo_cachorro_madog_girafinha_pelucia_pet_elastica_1570433820_70ff_600x600.jpg

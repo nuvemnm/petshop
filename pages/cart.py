@@ -5,10 +5,8 @@ class Cart(UserControl):
         super().__init__()
         self.page = page
 
-        self.title = Text("Página Inicial")
-        self.login = ElevatedButton(text = 'Login', on_click = lambda _: self.page.go('/login'))  
-        self.register = ElevatedButton(text = 'Cadastrar', on_click = lambda _: self.page.go('/register')) 
-        self.out = ElevatedButton(text = 'Sair') 
+        self.title = Text("Carrinho",size=32)
+        self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/shop')) 
     
     def build(self):
         
@@ -16,9 +14,7 @@ class Cart(UserControl):
             content=Column(
                 controls=[
                     self.title,
-                    self.login,
-                    self.register,
-                    self.out
+                    self.back
                 ],
                 horizontal_alignment=CrossAxisAlignment.CENTER,  # Centraliza os elementos horizontalmente
             ),
