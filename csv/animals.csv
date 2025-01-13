@@ -1,2 +1,2 @@
-type,name,sex,castrated,race,birth,weight
-cachorro,freio a disco,macho,1,pinscher,04/03/2020,12
+id_user,specie,name,sex,castrated,race,age,weight
+0000,Peixe,123,Macho,Não,131,231,12

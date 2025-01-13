@@ -5,6 +5,10 @@ from pages.register import Register
 from pages.menu import Menu
 from pages.shop import Shop
 from pages.cart import Cart
+from pages.banho import Banho
+from pages.pets import Pets
+from pages.pet_register import PetRegister
+from pages.services import Services
 
 def views_handler(page):
     return {
@@ -13,5 +17,9 @@ def views_handler(page):
         '/register' : View(route = '/register', controls = [Register(page)]),
         '/menu' : View(route = '/menu', controls = [Menu(page)]),
         '/shop' : View(route = '/shop', controls = [Shop(page)]),
-        '/cart' : View(route = '/cart', controls = [Cart(page)])
+        '/cart' : View(route = '/cart', controls = [Cart(page)]),
+        '/pets' : View(route = '/pets', controls = [Pets(page)]),
+        '/pet_register' : View(route = '/pet_register', controls = [PetRegister(page)]),
+        '/wash' : View(route = '/wash', controls = [Banho(page)]),
+        '/services' : View(route = '/services', controls = [Services(page)])
     }
