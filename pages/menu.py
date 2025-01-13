@@ -6,7 +6,7 @@ class Menu(UserControl):
         self.page = page
 
         self.title = Text("Menu Principal")
-        self.shop = ElevatedButton(text = 'Loja', on_click = lambda _: self.page.go('/'))  
+        self.shop = ElevatedButton(text = 'Loja', on_click = lambda _: self.page.go('/shop'))  
         self.wash = ElevatedButton(text = 'Banho e Tosa', on_click = lambda _: self.page.go('/')) 
         self.medicine = ElevatedButton(text = 'Veterinária') 
     
