@@ -1,5 +1,5 @@
 from flet import *
-from user import User
+from classes.user import User
 
 class Register(UserControl):
     def __init__(self, page):

@@ -1,6 +1,6 @@
 from flet import *
 import csv
-from product import Product  # Importando a classe Product
+from classes.product import Product  # Importando a classe Product
 
 class Shop(UserControl):
     def __init__(self, page):

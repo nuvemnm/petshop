@@ -11,6 +11,6 @@ def main(page: Page):
 
     # Configuração inicial
     page.on_route_change = route_change
-    page.go('/shop')  # Define a página inicial como "/"
+    page.go('/')  # Define a página inicial como "/"
 
 app(target=main)

@@ -1,5 +1,5 @@
 from flet import *
-from user import User
+from classes.user import User
 import csv
 
 class Login(UserControl):
