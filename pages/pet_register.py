@@ -1,5 +1,5 @@
 from flet import *
-import random
+from classes.user import User
 from classes.animals import Animal
 
 class PetRegister(UserControl):
@@ -7,12 +7,14 @@ class PetRegister(UserControl):
         super().__init__()
         self.page = page
         self.animal = Animal()
+        self.user = User()
         
         #titulo
         self.title = Text("Cadastre seu bichinho")
 
         #campos de texto
         self.animal.specie = Dropdown(
+            label = "Espécie do Animal",
             width=300,
             options=[
                 dropdown.Option("Cachorro"),
@@ -21,8 +23,16 @@ class PetRegister(UserControl):
             ],
         )
         self.animal.name = TextField(label = "Nome", width = 300)
-        self.animal.sex = TextField(label = "Sexo", width = 300)
+        self.animal.sex = Dropdown(
+            label = "Sexo",
+            width=300,
+            options=[
+                dropdown.Option("Fêmea"),
+                dropdown.Option("Macho"),
+            ],
+        )
         self.animal.castrated = Dropdown(
+            label = "Castrado",
             width = 300,
             options = [
                 dropdown.Option("Sim"),
@@ -37,8 +47,6 @@ class PetRegister(UserControl):
         self.register = ElevatedButton(text = 'Finalizar Cadastro', on_click = self.insert_data) 
         self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/menu'))
 
-    def randomize(self):
-        return random.randint(1000, 9999)  # Gera um número entre 1000 e 9999
 
     def build(self):
         
@@ -63,8 +71,8 @@ class PetRegister(UserControl):
     
     #Insere uma linha de dados em um arquivo CSV no formato de string.
     def insert_data(self, e):
-        self.animal.id_user = self.randomize()
-        line = f"{self.animal.id_user},{self.animal.specie.value},{self.animal.name.value},{self.animal.sex.value},{self.animal.castrated.value},{self.animal.race.value},{self.animal.age.value},{self.animal.weight.value}"   
+        
+        line = f"{self.user.id_user},{self.animal.specie.value},{self.animal.name.value},{self.animal.sex.value},{self.animal.castrated.value},{self.animal.race.value},{self.animal.age.value},{self.animal.weight.value}"   
         
         try:
             # Abre o arquivo em modo de anexar
