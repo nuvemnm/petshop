@@ -1,6 +1,7 @@
 import os
 from flet import *
 from classes.user import User
+from configs import USERS_TABLE_PATH
 import csv
 
 class Login(UserControl):
@@ -12,8 +13,8 @@ class Login(UserControl):
         self.title = Text("Insira seu nome de usuário e senha")
 
         #campos de texto
-        self.user.name = TextField(label = "nome de usuário", width = 300)
-        self.user.password = TextField(label = "senha", width = 300)
+        self.user.name = TextField(label = "nome de usuário", width = 300,on_submit=self.verify_data)
+        self.user.password = TextField(label = "senha", width = 300, on_submit=self.verify_data)
 
         #buttons
         self.login = ElevatedButton(text="Avançar", on_click = self.verify_data) 
@@ -37,9 +38,8 @@ class Login(UserControl):
 
     #Verifica se um par de valores (nome, senha) existe nos dois primeiros campos de um arquivo CSV.
     def verify_data(self, e):
-        file_path = os.path.join("csv","users.csv")
         try:
-            with open(file_path, mode='r', encoding='utf-8') as f:
+            with open(USERS_TABLE_PATH, mode='r', encoding='utf-8') as f:
                 leitor = csv.reader(f)
                 
                 # Itera sobre cada linha do arquivo CSV
@@ -50,7 +50,7 @@ class Login(UserControl):
 
             return False  # Retorna False se o par (nome, senha) não for encontrado
         except FileNotFoundError:
-            print(f"Erro: Arquivo '{os.path.basename(file_path)}' não encontrado.")
+            print(f"Erro: Arquivo '{os.path.basename(USERS_TABLE_PATH)}' não encontrado.")
             return False
         except Exception as e:
             print(f"Erro ao ler o arquivo: {e}")
