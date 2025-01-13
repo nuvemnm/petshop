@@ -12,8 +12,8 @@ class Login(UserControl):
         self.title = Text("Insira seu nome de usuário e senha")
 
         #campos de texto
-        self.user.name = TextField(label = "nome de usuário", width = 300)
-        self.user.password = TextField(label = "senha", width = 300)
+        self.user.name = TextField(label = "nome de usuário", width = 300,on_submit=self.verify_data)
+        self.user.password = TextField(label = "senha", width = 300, on_submit=self.verify_data)
 
         #buttons
         self.login = ElevatedButton(text="Avançar", on_click = self.verify_data) 
