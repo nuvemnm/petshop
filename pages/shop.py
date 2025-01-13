@@ -9,7 +9,7 @@ class Shop(UserControl):
         self.products = []
 
         self.title = Text("Loja")
-        self.litlecar = ElevatedButton(text='Carrinho', on_click=lambda _: self.page.go('/login')) 
+        self.cart = ElevatedButton(text='Carrinho', on_click=lambda _: self.page.go('/cart')) 
         self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/menu'))
 
     def collect_products(self):
@@ -60,7 +60,7 @@ class Shop(UserControl):
                 controls=[
                     self.title,
                     *cards,  # Adiciona todos os cards
-                    self.litlecar,
+                    self.cart,
                     self.back,
                 ],
                 horizontal_alignment=CrossAxisAlignment.CENTER,  # Centraliza os elementos horizontalmente

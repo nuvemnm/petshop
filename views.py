@@ -4,6 +4,7 @@ from pages.login import Login
 from pages.register import Register
 from pages.menu import Menu
 from pages.shop import Shop
+from pages.cart import Cart
 
 def views_handler(page):
     return {
@@ -12,4 +13,5 @@ def views_handler(page):
         '/register' : View(route = '/register', controls = [Register(page)]),
         '/menu' : View(route = '/menu', controls = [Menu(page)]),
         '/shop' : View(route = '/shop', controls = [Shop(page)]),
+        '/cart' : View(route = '/cart', controls = [Cart(page)])
     }
