@@ -1,5 +1,7 @@
 from flet import *
 from classes.user import User
+from configs import USERS_TABLE_PATH
+import os
 
 class Register(UserControl):
     def __init__(self, page):
@@ -44,14 +46,13 @@ class Register(UserControl):
     def insert_data(self, e):
         
         line = f"{self.user.name.value},{self.user.password.value},{self.user.email.value},{self.user.cpf.value},{self.user.address.value}"   
-        
         try:
             # Abre o arquivo em modo de anexar
-            with open("csv\\users.csv", 'a', encoding='utf-8') as f:
+            with open(USERS_TABLE_PATH, 'a', encoding='utf-8') as f:
                 # Adiciona a linha no arquivo e pula para a próxima linha
                 f.write(line + '\n')
                 self.page.go('/')
 
-            print(f"Linha inserida com sucesso no arquivo '{arquivo}': {linha}")
+            print(f"Linha inserida com sucesso no arquivo '{os.path.basename(USERS_TABLE_PATH)}': {line}")
         except Exception as e:
             print(f"Erro ao inserir a linha no CSV: {e}")
