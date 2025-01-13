@@ -1,5 +1,7 @@
 from flet import *
 from views import views_handler
+import warnings
+warnings.filterwarnings("ignore")
 
 def main(page: Page):
     # Função chamada quando a rota muda
@@ -11,7 +13,7 @@ def main(page: Page):
 
     # Configuração inicial
     page.on_route_change = route_change
-    page.go('/services')  # Define a página inicial como "/"
+    page.go('/') 
     print(page)
 
 app(target=main)

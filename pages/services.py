@@ -1,5 +1,5 @@
 from flet import *
-from classes.animal import Animal
+from classes.animals import Animal
 from pets import collect_animals
 
 class Services(UserControl):

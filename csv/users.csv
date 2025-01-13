@@ -1,2 +1,7 @@
-id_user,name,passsword,email,cpf,address
-0000,nvm,123,2313,123123,12312
+id_user;name;password;email;cpf;address
+0;nvm;123;2313@ufmg.br;123123;12312
+1;Talvani;1332123#;talvani@ufmg.br;12312312322;Rua
+2;Talvaninn;13123313#;teste@ufmg.br;12312312322;R
+3;testezinho;13123123#;teste13123@ufmg.br;12312312322;R
+4;testezinhooou;12313233#;teste@ufmg.br;12312312322;rrR
+5;3123123123;3123123123#;3132@ufmg.br;12312312322;R

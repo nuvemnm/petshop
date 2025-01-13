@@ -7,7 +7,8 @@ class PetRegister(UserControl):
         super().__init__()
         self.page = page
         self.animal = Animal()
-        self.user = User()
+
+        user_data = page.session.get("user")
         
         #titulo
         self.title = Text("Cadastre seu bichinho")
