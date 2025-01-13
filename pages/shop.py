@@ -67,8 +67,3 @@ class Shop(UserControl):
             ),
             alignment=alignment.center,  # Centraliza todo o container na página
         )
-
-def main(page: Page):
-    page.add(Shop(page))
-
-app(target=main)

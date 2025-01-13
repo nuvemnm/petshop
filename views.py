@@ -11,5 +11,5 @@ def views_handler(page):
         '/login': View(route = '/login', controls = [Login(page)]),
         '/register' : View(route = '/register', controls = [Register(page)]),
         '/menu' : View(route = '/menu', controls = [Menu(page)]),
-        '/shop' : View(route = '/shop', controls = [Shop(page)])
+        '/shop' : View(route = '/shop', controls = [Shop(page)]),
     }
