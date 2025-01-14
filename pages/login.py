@@ -1,9 +1,10 @@
 import os
 from flet import *
-from classes.user import User
+from database.user_database import UserDatabase
+from src.user import User
 from elements import *
 from configs import *
-from utils import save_user_to_session
+from session_manager import save_user_to_session
 import pandas as pd
 import csv
 import warnings
@@ -14,6 +15,7 @@ class Login(UserControl):
         super().__init__()
         self.page = page
 
+        self.user_database = UserDatabase()
         self.element = Elements()
         self.title = self.element.create_title("Insira seu nome de usuário e senha")
         self.padding = Container(height=40)
@@ -45,8 +47,8 @@ class Login(UserControl):
     #Verifica se o par usuário e senha inserido existe no BD
     def verify_data(self, e):
         try:
-            users = pd.read_csv(USERS_TABLE_PATH,sep=";")
-            user_match = users[(users["name"] == self.input_name.value) & (users["password"] == self.input_password.value)]
+            user_match = self.user_database.get_user_with_username_and_password(self.input_name.value,self.input_password.value)
+
             if user_match.empty:
                 dlg = AlertDialog(
                 title=Text("Não foi possível fazer login."),

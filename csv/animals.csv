@@ -1,2 +1,7 @@
 id_pet;id_user;specie;name;sex;castrated;race;age;weight;image
-1;1;Peixe;Koi;Fêmea;Não;Peixe koi;2;7;images\pets\ai-generated-8520465_1280.webp
+1;1;Peixe;Koi;Fêmea;Não;Peixe koi;2;7.0;images\pets\ai-generated-8520465_1280.webp
+2;1;Cachorro;adas;Macho;True;dasdas;123;33.0;images\pets\Gráfico Principal Stress.png
+3;1;Gato;asa;Fêmea;True;sasa;2;3.0;images\pets\ParteCentral .png
+4;1;Cachorro;ads;Macho;True;123;321;312.0;images\pets\Captura de Tela (8).png
+5;1;Cachorro;asd;Fêmea;True;312;3;2.0;images\pets\ai-generated-8520465_1280.webp
+6;1;Peixe;KOI;Fêmea;True;koi;3;7.0;images\pets\ai-generated-8520465_1280.webp

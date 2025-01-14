@@ -1,5 +1,5 @@
 
-from classes.product import Product
+from src.product import Product
 import pandas as pd
 
 class Shopping_Cart:

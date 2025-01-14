@@ -2,8 +2,8 @@ from flet import *
 import pandas as pd
 from elements import *
 from configs import SERVICES_TABLE_PATH
-from scrollable_list import Scrollable_list
-from modal import ItemDetailsModal
+from ui.modal import ItemDetailsModal
+from ui.scrollable_list import Scrollable_list
 
 class Banho(UserControl):
     def __init__(self, page):

@@ -3,11 +3,11 @@ import pandas as pd
 import csv
 from configs import *
 from elements import *
-from classes.product import Product
-from dialogs.sucess_dialog import SucessDialog  
-from cart import Shopping_Cart
-from modal import ItemDetailsModal
-from scrollable_list import Scrollable_list
+from src.product import Product
+from ui.sucess_dialog import SucessDialog  
+from shopping_cart import Shopping_Cart
+from ui.modal import ItemDetailsModal
+from ui.scrollable_list import Scrollable_list
 
 class Shop(UserControl):
     def __init__(self, page):

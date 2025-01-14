@@ -1,7 +1,8 @@
 from flet import *
-from classes.user import User
+from database.user_database import UserDatabase
+from src.user import User
 from configs import USERS_TABLE_PATH
-from utils import save_user_to_session
+from session_manager import save_user_to_session
 import pandas as pd
 
 import os
@@ -13,7 +14,7 @@ class Register(UserControl):
         
         #titulo
         self.title = Text("Cadastro")
-
+        self.user_database = UserDatabase()
         #campos de texto
         self.input_name = TextField(label="Nome de usuário", width=300,on_submit=self.verify_data)
         self.input_email = TextField(label="Email", width=300,on_submit=self.verify_data)
@@ -48,30 +49,20 @@ class Register(UserControl):
             alignment=alignment.center,  # Centraliza todo o container na página
         )
     
-
-
     
     def verify_data(self, e):
-        if self.is_name_taken(self.input_name.value):
-            print("1")
+        if self.user_database.is_name_taken(self.input_name.value):
             self.notify_user("O nome de usuário já está em uso.")
             return
         try:
-            next_id = self.get_current_id() + 1
-
+            next_id = self.user_database.get_current_id() + 1
             user = User(next_id,self.input_name.value,self.input_password.value,self.input_email.value,self.input_cpf.value,self.input_address.value)
-            self.insert_data(user)
+            self.register_user(user)
 
         except ValueError as ve:
             self.notify_user(ve)
 
-    def is_name_taken(self, name):
-        user_names = pd.read_csv(USERS_TABLE_PATH,sep=";")["name"].values
-        return (name in user_names)
 
-    def get_current_id(self):
-        max_id = max(pd.read_csv(USERS_TABLE_PATH,sep=";")["id_user"].values)
-        return int(max_id)
     
     def notify_user(self,message):
         dlg = AlertDialog(
@@ -80,18 +71,9 @@ class Register(UserControl):
         )
         self.page.open(dlg)
 
-    #Insere uma linha de dados em um arquivo CSV no formato de string.
-    def insert_data(self, user):
-        line = f"{user.id_user};{user.name};{user.password};{user.email};{user.cpf};{user.address}"   
+    # Insere o usuário, salva na sessão e vai pro menu.
+    def register_user(self, user):
+        self.user_database.insert_data(user)
+        save_user_to_session(self.page,user)
 
-        try:
-            # Abre o arquivo em modo de anexar
-            with open(USERS_TABLE_PATH, 'a', encoding='utf-8') as f:
-                # Adiciona a linha no arquivo e pula para a próxima linha
-                f.write(line + '\n')
-                save_user_to_session(self.page,user)
-                self.page.go('/menu')
-
-            print(f"Linha inserida com sucesso no arquivo '{os.path.basename(USERS_TABLE_PATH)}': {line}")
-        except Exception as e:
-            print(f"Erro ao inserir a linha no CSV: {e}")
+        self.page.go('/menu')

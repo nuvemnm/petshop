@@ -2,11 +2,12 @@ from flet import *
 import pandas as pd
 import csv
 from configs import *
+from database.animal_database import AnimalDatabase
 from elements import * 
-from modal import ItemDetailsModal
-from scrollable_list import Scrollable_list
-from utils import * 
-from classes.animals import Animal  # Importando a classe Product
+from ui.modal import ItemDetailsModal
+from ui.scrollable_list import Scrollable_list
+from session_manager import * 
+from src.animals import Animal  # Importando a classe Product
 
 class Pets(UserControl):
     def __init__(self, page):
@@ -14,11 +15,12 @@ class Pets(UserControl):
         self.page = page
         self.element = Elements()
 
+        self.animal_database = AnimalDatabase()
         self.title = self.element.create_title("Meus Pets")
         self.new_pet = self.element.create_button("Cadastrar Novo Pet", lambda _: self.page.go('/pet_register'))
         self.back = self.element.create_button("Voltar", lambda _: self.page.go('/menu'))
 
-        self.pets_list = load_pet_list_from_session(self.page)
+        self.user = load_user_from_session(self.page)
 
 
 
@@ -42,12 +44,12 @@ class Pets(UserControl):
         self.page.update()
 
     def get_pets(self):
-        return load_pet_list_from_session(self.page)
+        return self.animal_database.get_pet_list_by_user_id(self.user.id_user)
 
     def build(self):
-
+        pets_list = self.get_pets()
         lista = Scrollable_list(
-            dataframe=self.pets_list,
+            dataframe=pets_list,
             title_col_name="name",
             desc_col_names={'specie':'Espécie','race':'Raça'},
             on_item_click=self.on_item_click
