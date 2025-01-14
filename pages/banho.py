@@ -14,7 +14,6 @@ class Banho(UserControl):
 
         self.title = self.element.create_title("Banho e Tosa")
          
-        self.payment = self.element.create_button("Finalizar Pagamento", lambda _: self.page.go('/payment')) 
         self.back = self.element.create_button("Voltar", lambda _: self.page.go('/pets'))
 
 
@@ -60,7 +59,6 @@ class Banho(UserControl):
                 controls=[
                     self.title,
                     lista.build(),
-                    self.payment,
                     self.back
                 ],
                 horizontal_alignment=CrossAxisAlignment.CENTER,  # Centraliza os elementos horizontalmente
