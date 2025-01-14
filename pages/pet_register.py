@@ -60,7 +60,7 @@ class PetRegister(UserControl):
             width=300, height=50, style=ButtonStyle(shape=RoundedRectangleBorder(radius=10))
         )
         self.register = self.element.create_button("Finalizar Cadastro", self.verify_data)
-        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/'))
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/home'))
 
 
         self.user = load_user_from_session(self.page)
