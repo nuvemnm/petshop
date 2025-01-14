@@ -25,3 +25,4 @@ def views_handler(page):
         '/wash' : View(route = '/wash', controls = [Banho(page)]),
         #'/veterinia' : View(route = '/veterinaria', controls = [Services(page)]),
         '/payment' : View(route = '/payment', controls = [Payment(page)])
+    }

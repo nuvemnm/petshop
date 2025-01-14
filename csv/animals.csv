@@ -1,1 +1,2 @@
 id_pet;id_user;specie;name;sex;castrated;race;age;weight;image
+1;1;Gato;Baphomet;Macho;Sim;Demonio;8923;666;images\pets\baphomet.jpg

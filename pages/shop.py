@@ -175,7 +175,7 @@ class Shop(UserControl):
             controls=cards,
             spacing=10,
             padding=10,
-            height=800
+            height=580
         )
 
         return Container(

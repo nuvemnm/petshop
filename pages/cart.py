@@ -107,7 +107,7 @@ class Cart(UserControl):
             controls=cards,
             spacing=10,
             padding=10,
-            height=600
+            height=540
         )
 
         return Container(
