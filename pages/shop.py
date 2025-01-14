@@ -22,8 +22,7 @@ class Shop(UserControl):
 
         self.cart = self.page.session.get("cart")
 
-        self.cart_button = ElevatedButton(text="Carrinho", on_click=lambda _: self.page.go('/cart')
-        )
+        self.cart_button = ElevatedButton(text="Carrinho", on_click=lambda _: self.page.go('/cart'))
         self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/menu'))
 
     def on_item_click(self, item):

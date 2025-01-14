@@ -1,6 +1,7 @@
 import os
 from flet import *
 from classes.user import User
+from elements import *
 from configs import *
 from utils import save_user_to_session
 import pandas as pd
@@ -13,23 +14,26 @@ class Login(UserControl):
         super().__init__()
         self.page = page
 
-        self.title = Text("Insira seu nome de usuário e senha")
-
+        self.element = Elements()
+        self.title = self.element.create_title("Insira seu nome de usuário e senha")
+        self.padding = Container(height=40)
         #campos de texto
         self.input_name = TextField(label = "nome de usuário", width = 300,on_submit=self.verify_data)
         self.input_password = TextField(label = "senha", width = 300, on_submit=self.verify_data)
 
         #buttons
-        self.login = ElevatedButton(text="Avançar", on_click = self.verify_data) 
-        self.back = ElevatedButton(text="Voltar", on_click = lambda _: self.page.go('/')) 
+        self.login = self.element.create_button("Avançar", self.verify_data) 
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/'))
         
     def build(self):
         return Container(
             content = Column(
                 controls=[
                     self.title,
+                    self.padding,
                     self.input_name,
                     self.input_password,
+                    self.padding,
                     self.login,
                     self.back
                 ],

@@ -12,7 +12,7 @@ class Cart(UserControl):
         self.cart = self.page.session.get("cart")
 
         self.title = Text("Carrinho",size=32)
-        self.payment_button = ElevatedButton(text = 'Ir para pagamento', on_click = lambda _: self.page.go('/payment')) 
+        self.payment_button = ElevatedButton(text = 'Finalizar Compra', on_click = lambda _: self.page.go('/payment')) 
         self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/shop')) 
         self.total_price_text = Text(size=18)
         self.lista = None
