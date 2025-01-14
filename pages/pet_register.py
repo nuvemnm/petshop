@@ -4,6 +4,7 @@ from flet import *
 from classes.user import User
 from classes.animals import Animal
 import pandas as pd
+from elements import *
 from configs import PETS_TABLE_PATH
 from utils import load_user_from_session,save_user_pets_to_session
 
@@ -13,10 +14,14 @@ class PetRegister(UserControl):
         super().__init__()
         self.page = page
         self.animal = Animal()
+        self.element = Elements()
+
+        self.padding = Container(height=40)
+        
         self.user = load_user_from_session(self.page)
         
         # Título
-        self.title = Text("Cadastre seu bichinho")
+        self.title = self.element.create_title("Cadastre seu bichinho")
         
         # FilePicker para seleção de imagem
         self.pick_files_dialog = FilePicker(on_result=self.pick_files_result)
@@ -59,9 +64,10 @@ class PetRegister(UserControl):
             "Escolher Foto",
             icon=Icons.UPLOAD_FILE,
             on_click=lambda _: self.pick_files_dialog.pick_files(allow_multiple=False),
+            width = 300, height = 50, style=ButtonStyle(shape=RoundedRectangleBorder(radius=10))
         )
-        self.register = ElevatedButton(text="Finalizar Cadastro", on_click=self.insert_data)
-        self.back = ElevatedButton(text="Voltar", on_click=lambda _: self.page.go('/menu'))
+        self.register = self.element.create_button("Finalizar Cadastro", self.insert_data)
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/pets'))
 
     def get_current_id(self):
         try:
@@ -84,6 +90,7 @@ class PetRegister(UserControl):
             content=Column(
                 controls=[
                     self.title,
+                    self.padding,
                     self.animal.specie,
                     self.animal.name,
                     self.animal.sex,
@@ -91,6 +98,7 @@ class PetRegister(UserControl):
                     self.animal.race,
                     self.animal.age,
                     self.animal.weight,
+                    self.padding,
                     self.upload_button,
                     self.register,
                     self.back,

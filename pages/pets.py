@@ -2,6 +2,7 @@ from flet import *
 import pandas as pd
 import csv
 from configs import *
+from elements import * 
 from modal import ItemDetailsModal
 from scrollable_list import Scrollable_list
 from utils import * 
@@ -11,9 +12,11 @@ class Pets(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.title = Text("Meus Pets",size=32)
-        self.new_pet = ElevatedButton(text='Cadastrar Novo Pet', on_click=lambda _: self.page.go('/pet_register'), height=30)
-        self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/menu'), height=30)
+        self.element = Elements()
+
+        self.title = self.element.create_title("Meus Pets")
+        self.new_pet = self.element.create_button("Cadastrar Novo Pet", lambda _: self.page.go('/pet_register'))
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/menu'))
 
         self.pets_list = load_pet_list_from_session(self.page)
 
