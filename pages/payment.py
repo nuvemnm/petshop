@@ -1,8 +1,11 @@
 from flet import *
+from database.product_database import ProductDatabase
+from database.purchases_database import PurchasesDatabase
 from session_manager import *
 from pages.cart import *
 from elements import *
 from configs import *
+from shopping_cart import Shopping_Cart
 
 class Payment(UserControl):
     def __init__(self, page):
@@ -15,6 +18,12 @@ class Payment(UserControl):
         self.user = load_user_from_session(self.page)
 
         self.payment_info = self.page.session.get("payment_info")
+
+        self.product_database = ProductDatabase()
+        self.purchases_database = PurchasesDatabase()
+
+        self.price = self.element.create_title(f"Subtotal: R$ 0")
+
         if self.payment_info:
             self.price = self.element.create_title(f"Subtotal: R$ {self.payment_info['price']}")
 
@@ -96,6 +105,8 @@ class Payment(UserControl):
         self.dynamic_container.update()
  
     def verify_data(self, e):
+        if not self.payment_info:
+            return
         # Lista para armazenar mensagens de erro
         errors = []
 
@@ -126,94 +137,35 @@ class Payment(UserControl):
 
         # Todos os campos foram validados com sucesso
         print("Todos os campos foram preenchidos corretamente!")
-        self.insert_purchase()
+
+
+
         if self.payment_info["origin_page"] == "cart":
-            self.decrease_item()
+            for _, product in self.payment_info["products"].iterrows():
+                # Itera pela quantidade do produto
+                for _ in range(int(product["quantity"])):  # A quantidade determina o número de repetições
+                    # Passa cada produto para o método de inserção de compra
+                    self.purchases_database.insert_purchase(self.user, "cart", product)
+                    
+                    # Decrementa a quantidade do produto no banco de dados de produtos
+                    self.product_database.decrease_item(product)
+                
+            # Limpa o carrinho
+            self.page.session.set("cart", Shopping_Cart())
+
+        elif self.payment_info["origin_page"] == "wash":
+            # Passa cada produto para o método de inserção de compra
+            self.purchases_database.insert_purchase(self.user, "wash", self.payment_info["products"])
+            
+
 
         self.page.go('/menu')
         return True  # Retorna True para indicar que a validação foi bem-sucedida
-        
-    def get_current_id(self):
-        df = pd.read_csv(PURCHASES_TABLE_PATH, sep=";")
-        
-        if df.empty:
-            return 0
-        
-        max_id = df["id_purchase"].max() 
-        return int(max_id) if pd.notna(max_id) else 0
 
-
-    def insert_purchase(self):
-        if self.payment_info["origin_page"] == "cart":
-            purchases_df = pd.read_csv(PURCHASES_TABLE_PATH, sep=";")
-
-            new_rows = []
-            for item in self.payment_info["products"].itertuples(index=False):
-                # Repetir o item com base na quantidade
-                for _ in range(int(item.quantity)):  # A quantidade é usada para determinar a repetição
-                    new_rows.append({
-                        "id_purchase":self.get_current_id()+1,
-                        "id_product": item.id_product,
-                        "id_user":self.user.id_user,
-                        "name": item.name,
-                        "price": item.price,
-                        "date": pd.to_datetime("today").strftime("%Y-%m-%d"),  # Data de compra
-                        "description": item.description,
-                        "image": item.image,
-                        "status": "Preparando pedido"
-                    })
-            # Criar um DataFrame para as novas linhas
-            new_df = pd.DataFrame(new_rows)
-
-            # Adicionar as novas linhas ao DataFrame existente
-            purchases_df = pd.concat([purchases_df, new_df], ignore_index=True)
-
-            # Salvar o DataFrame atualizado no CSV, preservando as informações existentes
-            purchases_df.to_csv(PURCHASES_TABLE_PATH, sep=";", index=False)
-        
-        elif self.payment_info["origin_page"] == "wash":
-            print("INSERINDO WASH")
-            item = self.payment_info["products"]
-            purchases_df = pd.read_csv(PURCHASES_TABLE_PATH, sep=";")
-            new_rows = []
-            new_rows.append({
-                "id_purchase":self.get_current_id()+1,
-                "id_service": item["id_service"],
-                "id_user":self.user.id_user,
-                "name": item["name"],
-                "price": item["price"],
-                "date": pd.to_datetime("today").strftime("%Y-%m-%d"),  # Data de compra
-                "status": "Aguardando data"
-            })
-            # Criar um DataFrame para as novas linhas
-            new_df = pd.DataFrame(new_rows)
-
-            # Adicionar as novas linhas ao DataFrame existente
-            purchases_df = pd.concat([purchases_df, new_df], ignore_index=True)
-
-            # Salvar o DataFrame atualizado no CSV, preservando as informações existentes
-            purchases_df.to_csv(PURCHASES_TABLE_PATH, sep=";", index=False)
-
-
-    def decrease_item(self):
-        products_df = pd.read_csv(PRODUCTS_TABLE_PATH, sep=";")
-        
-        if not products_df.empty:
-            for item in self.payment_info["products"].itertuples(index=False):
-                product_index = products_df[products_df["id_product"] == item.id_product].index
-                
-                if len(product_index) > 0:
-                    # Reduzir a quantidade do produto encontrado
-                    products_df.at[product_index[0], "quantity"] -= 1
-                    
-            # Salvar as alterações de volta no arquivo CSV
-            products_df.to_csv(PRODUCTS_TABLE_PATH, sep=";", index=False)
-        else:
-            print("Não há produtos no inventário.")
 
 
     def build(self):
-        print(self.payment_info)
+        self.payment_info = self.page.session.get("payment_info")
         return Container(
             content=Column(
                 controls=[

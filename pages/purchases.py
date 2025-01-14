@@ -3,6 +3,7 @@ from utils import *
 from pages.cart import *
 from elements import *
 import pandas as pd
+from configs import PURCHASES_TABLE_PATH
 
 class Purchases(UserControl):
     def __init__(self, page):

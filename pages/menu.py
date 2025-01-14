@@ -25,7 +25,7 @@ class Menu(UserControl):
         self.title = self.element.create_title("Menu Principal")
         self.shop = self.element.create_button("Loja", lambda _: self.page.go('/shop'))
 
-        self.myPets = self.element.create_button("Meus Pets", self.verify_pet)
+        self.myPets = self.element.create_button("Meus Pets", self.go_pets)
         self.my_purchases = self.element.create_button("Minhas Compras",lambda _: self.page.go('/purchases'))
         self.out = self.element.create_button("Sair", self.close_app)
 
@@ -63,7 +63,6 @@ class Menu(UserControl):
                 self.has_pet = True
             else:
                 self.has_pet = False
-                print("nao vazio")
 
             return False  
         except FileNotFoundError:

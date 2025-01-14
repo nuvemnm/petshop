@@ -13,7 +13,7 @@ class Cart(UserControl):
 
         self.element = Elements()
         self.title = self.element.create_title("Carrinho") 
-        self.payment_button = self.element.create_button("Finalizar Compra", lambda _: self.page.go('/payment'))  
+        self.payment_button = self.element.create_button("Finalizar Compra", lambda _: self.go_payment())  
         self.back = self.element.create_button("Voltar", lambda _: self.page.go('/shop')) 
 
         self.total_price_text = Text(size=18)
@@ -84,18 +84,18 @@ class Cart(UserControl):
                 title=Text("Não foi possível remover o item do carrinho"),
             )
             self.page.open(dlg)
-        print(self.cart.product_list.shape)
 
     def go_payment(self):
         payment_info = {"price":self.cart.get_total_price(),"products":self.cart.product_list,"origin_page":"cart"}
         self.page.session.set("payment_info",payment_info)
         self.page.go('/payment')
 
+
     def build(self):
         self.lista = Scrollable_list(
             dataframe=self.cart.product_list,
             title_col_name="name",
-            desc_col_names={'price': 'R$', 'quantity': 'Quantidade disponível'},
+            desc_col_names={'price': 'R$', 'quantity': 'Quantidade em carrinho'},
             on_item_click=self.on_item_click
         )
 
