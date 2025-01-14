@@ -64,3 +64,5 @@ class Login(UserControl):
         except Exception as e:
             print(f"Erro ao ler o arquivo: {e}")
             return False
+
+

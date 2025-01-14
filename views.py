@@ -9,6 +9,7 @@ from pages.banho import Banho
 from pages.pets import Pets
 from pages.payment import Payment
 from pages.pet_register import PetRegister
+from pages.banho import Banho
 ## from pages.services import Services
 
 def views_handler(page):
@@ -22,6 +23,5 @@ def views_handler(page):
         '/pets' : View(route = '/pets', controls = [Pets(page)]),
         '/pet_register' : View(route = '/pet_register', controls = [PetRegister(page)]),
         '/wash' : View(route = '/wash', controls = [Banho(page)]),
+        #'/veterinia' : View(route = '/veterinaria', controls = [Services(page)]),
         '/payment' : View(route = '/payment', controls = [Payment(page)])
-##        '/services' : View(route = '/services', controls = [Services(page)])
-    }
