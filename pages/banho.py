@@ -11,7 +11,7 @@ class Banho(UserControl):
         self.page = page
         self.title = Text("Banho e Tosa",size=32)
         
-        self.payment = ElevatedButton(text = 'Finalizar Pagamento', on_click = lambda _: self.page.go('/pets')) 
+        self.payment = ElevatedButton(text = 'Finalizar Pagamento', on_click = lambda _: self.go_payment()) 
         self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/pets')) 
 
         self.selected_item = None
@@ -19,17 +19,12 @@ class Banho(UserControl):
 
     def on_item_click(self, item):
         self.selected_item = item
-        self.modal = ItemDetailsModal(
-            item=item,
-            on_close=self.close_modal,
-            title_col_name="name",
-            desc=f"Preço: R${item['price']}",
-        ).build()
+        self.go_payment()
 
-        self.page.dialog = self.modal
-        self.page.dialog.open = True
-        self.page.update()
-
+    def go_payment(self):
+        payment_info = {"price":self.selected_item["price"],"products":self.selected_item,"origin_page":"wash"}
+        self.page.session.set("payment_info",payment_info)
+        self.page.go('/payment')
 
 
     def close_modal(self):
