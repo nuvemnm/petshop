@@ -9,7 +9,7 @@ class Cart(UserControl):
         self.cart = page.session.get("cart")
 
         self.title = Text("Carrinho",size=32)
-        self.payment_button = ElevatedButton(text = 'Ir para pagamento', on_click = lambda _: self.page.go('/payment')) 
+        self.payment_button = ElevatedButton(text = 'Finalizar Compra', on_click = lambda _: self.page.go('/payment')) 
         self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/shop')) 
         self.modal_image = Image(width=600, height=400, fit="contain")
         self.modal_title = Text(size=22, weight="bold")

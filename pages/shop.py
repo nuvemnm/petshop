@@ -17,8 +17,7 @@ class Shop(UserControl):
 
         self.cart = self.page.session.get("cart")
 
-        self.cart_button = ElevatedButton(text="Carrinho", on_click=lambda _: self.page.go('/cart')
-        )
+        self.cart_button = ElevatedButton(text="Carrinho", on_click=lambda _: self.page.go('/cart'))
         self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/menu'))
         
         self.modal_image = Image(width=600, height=400, fit="contain")
