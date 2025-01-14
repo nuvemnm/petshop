@@ -8,16 +8,36 @@ class Shopping_Cart:
         self.total_price = 0
         self.len = 0
 
-    def add_product(self, product : Product):
-        if product.id_product in self.product_list["id_product"].values:
-            self.product_list.loc[self.product_list["id_product"] == product.id_product, "quantity"] += 1
+    def add_product(self, product_row):
+        if product_row["id_product"] in self.product_list["id_product"].values:
+            self.product_list.loc[self.product_list["id_product"] == product_row["id_product"], "quantity"] += 1
         else:
-            new_product = pd.DataFrame([[product.id_product, product.name, product.price, 1, product.image, product.description]],
-                                       columns=["id_product", "name", "price", "quantity", "image", "description"])
-            self.product_list = pd.concat([self.product_list, new_product], ignore_index=True)
+            new_product = product_row.copy()
+            new_product["quantity"] = 1
+            self.product_list = pd.concat([self.product_list, pd.DataFrame([new_product])], ignore_index=True)
 
         self.len += 1
-        self.total_price += product.price
+        self.total_price += product_row["price"]
+
+    def remove_product(self, product_row):
+        if product_row["id_product"] in self.product_list["id_product"].values:
+            current_quantity = self.product_list.loc[
+                self.product_list["id_product"] == product_row["id_product"], "quantity"
+            ].iloc[0]
+            
+            # Se a quantidade for maior que 1, decrementa a quantidade
+            if current_quantity > 1:
+                self.product_list.loc[
+                    self.product_list["id_product"] == product_row["id_product"], "quantity"
+                ] -= 1
+            else:
+                # Remove o produto do carrinho se a quantidade for 1
+                self.product_list = self.product_list[
+                    self.product_list["id_product"] != product_row["id_product"]
+                ]
+
+            self.len -= 1
+            self.total_price -= product_row["price"]        
 
     def get_quantity_in_cart(self, id_product):
         # Retorna a quantidade do produto no carrinho

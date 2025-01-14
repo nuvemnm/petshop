@@ -11,10 +11,11 @@ class Scrollable_list:
     def build(self):
         cards = []
 
-        # Iterar sobre o DataFrame
         for _, item in self.dataframe.iterrows():
             image_url = item.get("image", None)
-            # Criar cartão para cada item no DataFrame
+            
+            card_height = 210 if image_url else 150
+            
             card = GestureDetector(
                 on_tap=lambda e, p=item: self.on_item_click(p),
                 content=Card(
@@ -22,15 +23,13 @@ class Scrollable_list:
                         padding=10,
                         content=Row(
                             controls=[
-                                # Imagem do item (se disponível)
                                 Image(
                                     src=image_url,
                                     height=180,
                                     width=180,
                                     fit="FIT_HEIGHT"
-                                ) if image_url else Container(),  # Imagem vazia se não houver
+                                ) if image_url else Container(),
                                 
-                                # Informações do item
                                 Column(
                                     controls=[
                                         Text(item[self.title_col_name], size=26, weight="bold"),
@@ -48,7 +47,7 @@ class Scrollable_list:
                         ),
                     ),
                     width=240,
-                    height=210,
+                    height=card_height,
                 ),
             )
             cards.append(card)
@@ -57,5 +56,5 @@ class Scrollable_list:
             controls=cards,
             spacing=10,
             padding=10,
-            height=800,
+            height=500,
         )
