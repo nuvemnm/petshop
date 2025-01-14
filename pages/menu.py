@@ -12,7 +12,7 @@ class Menu(UserControl):
         self.page = page
 
         self.element = Elements()
-
+        self.padding = Container(height=40)
         self.user = load_user_from_session(self.page)
         self.user_name = Text(f"Olá,")
 
@@ -37,6 +37,7 @@ class Menu(UserControl):
                 controls=[
                     self.user_name,
                     self.title,
+                    self.padding,
                     self.shop,
                     self.myPets,
                     self.my_purchases,

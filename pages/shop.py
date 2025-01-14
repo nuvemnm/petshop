@@ -2,6 +2,7 @@ from flet import *
 import pandas as pd
 import csv
 from configs import *
+from elements import *
 from classes.product import Product
 from dialogs.sucess_dialog import SucessDialog  
 from cart import Shopping_Cart
@@ -12,18 +13,19 @@ class Shop(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
+        self.element = Elements()
         self.product_list = []
         self.selected_item = None
 
-        self.title = Text("Loja",size=32)
+        self.title = self.element.create_title("Loja")
 
         if not self.page.session.get("cart"):
             page.session.set("cart", Shopping_Cart())
 
         self.cart = self.page.session.get("cart")
 
-        self.cart_button = ElevatedButton(text="Carrinho", on_click=lambda _: self.page.go('/cart'))
-        self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/menu'))
+        self.cart_button = self.element.create_button("Carrinho", lambda _: self.page.go('/cart'))
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/menu'))
 
     def on_item_click(self, item):
         self.selected_item = item
@@ -103,13 +105,12 @@ class Shop(UserControl):
                 controls=[
                     self.title,
                     lista.build(),  # Container com os cards
-                    Row(
+                    Column(
                         controls=[
                             self.cart_button,
                             self.back,
                         ],
-                        alignment="center",  
-                        spacing=20, 
+                        horizontal_alignment=CrossAxisAlignment.CENTER,
                     ),
                 ],
                 horizontal_alignment=CrossAxisAlignment.CENTER,  # Centraliza os elementos horizontalmente

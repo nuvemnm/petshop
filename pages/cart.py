@@ -1,5 +1,5 @@
 from flet import *
-
+from elements import *
 from classes.product import Product
 from dialogs.sucess_dialog import SucessDialog
 from modal import ItemDetailsModal
@@ -11,9 +11,11 @@ class Cart(UserControl):
         self.page = page
         self.cart = self.page.session.get("cart")
 
-        self.title = Text("Carrinho",size=32)
-        self.payment_button = ElevatedButton(text = 'Finalizar Compra', on_click = lambda _: self.go_payment()) 
-        self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/shop')) 
+        self.element = Elements()
+        self.title = self.element.create_title("Carrinho") 
+        self.payment_button = self.element.create_button("Finalizar Compra", lambda _: self.page.go('/payment'))  
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/shop')) 
+
         self.total_price_text = Text(size=18)
         self.lista = None
 
