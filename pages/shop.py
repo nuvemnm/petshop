@@ -2,10 +2,10 @@ from flet import *
 import pandas as pd
 import csv
 from configs import *
-from elements import *
+from ui.elements import *
 from src.product import Product
 from ui.sucess_dialog import SucessDialog  
-from shopping_cart import Shopping_Cart
+from src.shopping_cart import Shopping_Cart
 from ui.modal import ItemDetailsModal
 from ui.scrollable_list import Scrollable_list
 

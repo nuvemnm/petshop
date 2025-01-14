@@ -5,7 +5,7 @@ from database.animal_database import AnimalDatabase
 from src.user import User
 from src.animals import Animal
 import pandas as pd
-from elements import *
+from ui.elements import *
 from configs import PETS_TABLE_PATH
 from session_manager import load_user_from_session
 

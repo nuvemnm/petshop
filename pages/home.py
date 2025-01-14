@@ -1,5 +1,5 @@
 from flet import *
-from elements import *
+from ui.elements import *
 
 class Home(UserControl):
     def __init__(self, page):

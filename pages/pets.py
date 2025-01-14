@@ -3,7 +3,7 @@ import pandas as pd
 import csv
 from configs import *
 from database.animal_database import AnimalDatabase
-from elements import * 
+from ui.elements import * 
 from ui.modal import ItemDetailsModal
 from ui.scrollable_list import Scrollable_list
 from session_manager import * 

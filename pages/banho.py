@@ -1,6 +1,6 @@
 from flet import *
 import pandas as pd
-from elements import *
+from ui.elements import *
 from configs import SERVICES_TABLE_PATH
 from ui.modal import ItemDetailsModal
 from ui.scrollable_list import Scrollable_list

@@ -4,7 +4,7 @@ import pandas as pd
 from configs import *
 from database.animal_database import AnimalDatabase
 from src.user import User
-from elements import *
+from ui.elements import *
 from session_manager import load_user_from_session
 
 class Menu(UserControl):

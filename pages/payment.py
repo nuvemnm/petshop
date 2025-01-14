@@ -3,9 +3,9 @@ from database.product_database import ProductDatabase
 from database.purchases_database import PurchasesDatabase
 from session_manager import *
 from pages.cart import *
-from elements import *
+from ui.elements import *
 from configs import *
-from shopping_cart import Shopping_Cart
+from src.shopping_cart import Shopping_Cart
 
 class Payment(UserControl):
     def __init__(self, page):

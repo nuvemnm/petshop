@@ -2,7 +2,7 @@ import os
 from flet import *
 from database.user_database import UserDatabase
 from src.user import User
-from elements import *
+from ui.elements import *
 from configs import *
 from session_manager import save_user_to_session
 import pandas as pd

@@ -1,7 +1,6 @@
 from flet import *
-from utils import *
 from pages.cart import *
-from elements import *
+from ui.elements import *
 import pandas as pd
 from configs import PURCHASES_TABLE_PATH
 
@@ -20,7 +19,7 @@ class Purchases(UserControl):
         user_purchases = purchases[purchases["id_user"] == self.user["id_user"]]
         return user_purchases
     
-    def on_item_click(self):
+    def on_item_click(self,e):
         pass
 
     def build(self):

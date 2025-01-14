@@ -1,5 +1,5 @@
 from flet import *
-from elements import *
+from ui.elements import *
 from src.product import Product
 from ui.sucess_dialog import SucessDialog
 from ui.modal import ItemDetailsModal
