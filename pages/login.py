@@ -42,13 +42,19 @@ class Login(UserControl):
             alignment=alignment.center,  # Centraliza todo o container na página
         )
 
-
-    #Verifica se um par de valores (nome, senha) existe nos dois primeiros campos de um arquivo CSV.
+    #Verifica se o par usuário e senha inserido existe no BD
     def verify_data(self, e):
         try:
             users = pd.read_csv(USERS_TABLE_PATH,sep=";")
             user_match = users[(users["name"] == self.input_name.value) & (users["password"] == self.input_password.value)]
-            if not user_match.empty:
+            if user_match.empty:
+                dlg = AlertDialog(
+                title=Text("Não foi possível fazer login."),
+                content=Text("Usuário ou senha incorretos"),
+                )   
+                self.page.open(dlg)
+
+            else:
                 user_data = user_match.iloc[0]                
                 user = User(user_data["id_user"],
                             user_data["name"],
@@ -56,7 +62,7 @@ class Login(UserControl):
                             user_data["email"],
                             user_data["cpf"],
                             user_data["address"])
-                
+
                 save_user_to_session(self.page,user)
 
                 self.page.go('/menu')

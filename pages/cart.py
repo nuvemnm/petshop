@@ -10,10 +10,12 @@ class Cart(UserControl):
         super().__init__()
         self.page = page
         self.cart = self.page.session.get("cart")
+
         self.element = Elements()
         self.title = self.element.create_title("Carrinho") 
         self.payment_button = self.element.create_button("Finalizar Compra", lambda _: self.page.go('/payment'))  
         self.back = self.element.create_button("Voltar", lambda _: self.page.go('/shop')) 
+
         self.total_price_text = Text(size=18)
         self.lista = None
 
@@ -84,6 +86,10 @@ class Cart(UserControl):
             self.page.open(dlg)
         print(self.cart.product_list.shape)
 
+    def go_payment(self):
+        payment_info = {"price":self.cart.get_total_price(),"products":self.cart.product_list,"origin_page":"cart"}
+        self.page.session.set("payment_info",payment_info)
+        self.page.go('/payment')
 
     def build(self):
         self.lista = Scrollable_list(
