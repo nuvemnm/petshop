@@ -157,9 +157,10 @@ class Payment(UserControl):
             # Passa cada produto para o método de inserção de compra
             self.purchases_database.insert_purchase(self.user, "wash", self.payment_info["products"])
             
-
-
+        success_dialog = SucessDialog("Pagamento efetuado com sucesso!","",self.page)
+        success_dialog.show()
         self.page.go('/menu')
+
         return True  # Retorna True para indicar que a validação foi bem-sucedida
 
 

@@ -20,7 +20,6 @@ class ProductDatabase:
 
 
     def decrease_item(self, product):
-        print(f"==============\n{product}\n============")
         # Lê o arquivo CSV para carregar os produtos existentes
         products_df = pd.read_csv(self.table_path, sep=";")
 
