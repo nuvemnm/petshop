@@ -1,12 +1,13 @@
 import os
 import shutil
 from flet import *
-from classes.user import User
-from classes.animals import Animal
+from database.animal_database import AnimalDatabase
+from src.user import User
+from src.animals import Animal
 import pandas as pd
 from elements import *
 from configs import PETS_TABLE_PATH
-from utils import load_user_from_session, save_user_pets_to_session
+from session_manager import load_user_from_session
 
 
 class PetRegister(UserControl):
@@ -15,17 +16,10 @@ class PetRegister(UserControl):
         self.page = page
         self.element = Elements()
 
-        self.padding = Container(height=40)
-
-        self.user = load_user_from_session(self.page)
-
-        # Título
+        # Título e elementos gráficos
         self.title = self.element.create_title("Cadastre seu bichinho")
 
-        # FilePicker para seleção de imagem
-        self.pick_files_dialog = FilePicker(on_result=self.pick_files_result)
-        self.selected_file_path = None  # Caminho do arquivo selecionado
-        page.overlay.append(self.pick_files_dialog)
+        self.padding = Container(height=40)
 
         # Campos do formulário
         self.specie_input = Dropdown(
@@ -68,20 +62,25 @@ class PetRegister(UserControl):
         self.register = self.element.create_button("Finalizar Cadastro", self.verify_data)
         self.back = self.element.create_button("Voltar", lambda _: self.page.go('/pets'))
 
-    def get_current_id(self):
-        try:
-            data = pd.read_csv(PETS_TABLE_PATH, sep=";")
-            max_id = max(pd.read_csv(PETS_TABLE_PATH, sep=";")["id_pet"].values)
-            return max_id or 0
-        except Exception as e:
-            print(f"Erro ao obter ID atual: {e}")
-            return 0
+
+        self.user = load_user_from_session(self.page)
+        self.animal_database = AnimalDatabase()
+
+        # Variáveis relacionadas com upload de arquivo
+        self.pick_files_dialog = FilePicker(on_result=self.pick_files_result)
+        self.selected_file_path = None  # Caminho do arquivo selecionado
+        self.has_uploaded_file = False
+        page.overlay.append(self.pick_files_dialog)
+
+
 
     def pick_files_result(self, e: FilePickerResultEvent):
         if e.files:
             self.selected_file_path = e.files[0].path  # Caminho do arquivo selecionado
+            self.has_uploaded_file = True
             print(f"Arquivo selecionado: {self.selected_file_path}")
         else:
+            self.has_uploaded_file = False
             self.selected_file_path = None
 
     def build(self):
@@ -116,8 +115,14 @@ class PetRegister(UserControl):
 
     def verify_data(self, e):
         try:
-            next_id = self.get_current_id() + 1
+            next_id = int(self.animal_database.get_current_id()) + 1
 
+            # Verifica se upload do arquivo já foi realizado
+            if not self.has_uploaded_file:
+                self.notify_user("O upload de imagem do pet é OBRIGATÓRIO")
+                return False
+            
+            # Código abaixo só roda se o upload de imagem tiver sido realizado
             dest_folder = os.path.join("images", "pets")
             os.makedirs(dest_folder, exist_ok=True)
             if self.selected_file_path:
@@ -136,28 +141,12 @@ class PetRegister(UserControl):
             self.sex_input.value, 
             self.castrated_input.value == "Sim", 
             self.race_input.value, 
-            int(self.age_input.value), 
-            float(self.weight_input.value), 
+            self.age_input.value, 
+            self.weight_input.value, 
             dest_path)
      
-            self.insert_data(pet)
+            if self.animal_database.insert_data(pet):
+                self.page.go('/pets')
 
         except ValueError as ve:
             self.notify_user(str(ve))
-        
-
-    def insert_data(self, animal):
-        line = f"{animal.id_pet};{animal.id_user};{animal.specie};{animal.name};{animal.sex};{animal.castrated};{animal.race};{animal.age};{animal.weight};{animal.image}"
-
-        try:
-            # Insere a linha no CSV
-            with open(PETS_TABLE_PATH, 'a', encoding='utf-8') as f:
-                f.write(line + '\n')
-
-                print(f"Cadastro realizado com sucesso: {line}")
-                save_user_pets_to_session(self.page, self.user.id_user)
-
-                self.page.go('/menu')
-
-        except Exception as ex:
-            print(f"Erro ao inserir os dados: {ex}")

@@ -1,5 +1,5 @@
 from flet import *
-from utils import *
+from session_manager import *
 from pages.cart import *
 from elements import *
 

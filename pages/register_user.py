@@ -1,7 +1,7 @@
 from flet import *
-from classes.user import User
+from src.user import User
 from configs import USERS_TABLE_PATH
-from utils import save_user_to_session
+from session_manager import save_user_to_session
 import pandas as pd
 
 import os

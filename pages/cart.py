@@ -1,9 +1,9 @@
 from flet import *
 from elements import *
-from classes.product import Product
-from dialogs.sucess_dialog import SucessDialog
-from modal import ItemDetailsModal
-from scrollable_list import Scrollable_list
+from src.product import Product
+from ui.sucess_dialog import SucessDialog
+from ui.modal import ItemDetailsModal
+from ui.scrollable_list import Scrollable_list
 
 class Cart(UserControl):
     def __init__(self, page):

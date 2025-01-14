@@ -49,8 +49,8 @@ class Animal:
     def name(self, value: str):
         if not value:
             raise ValueError("O nome do animal é obrigatório.")
-        if len(str(value)) < 3:
-            raise ValueError("O nome deve ter pelo menos 3 caracteres.")
+        if len(str(value)) < 2:
+            raise ValueError("O nome deve ter pelo menos 2 caracteres.")
         self._name = value
 
     # Getter e Setter para 'sex'
@@ -71,7 +71,7 @@ class Animal:
 
     @castrated.setter
     def castrated(self, value: str):
-        if not isinstance(value, str):
+        if not value:
             raise ValueError("O status de castração deve ser preenchido.")
         self._castrated = value
 
@@ -92,10 +92,17 @@ class Animal:
         return self._age
 
     @age.setter
-    def age(self, value: int):
-        if value is not None and (not isinstance(value, int) or value < 0):
+    def age(self, value : str):
+        if not str(value).strip():
+            raise ValueError("A idade não pode ser vazia.")
+        try:
+            value = int(value)
+        except ValueError:
+            raise ValueError("A idade deve ser um número inteiro válido.")
+        if value < 0:
             raise ValueError("A idade deve ser um número inteiro maior ou igual a 0.")
         self._age = value
+
 
     # Getter e Setter para 'weight'
     @property
@@ -103,9 +110,15 @@ class Animal:
         return self._weight
 
     @weight.setter
-    def weight(self, value: float):
-        if value is not None and (not isinstance(value, (int, float)) or value <= 0):
-            raise ValueError("O peso deve ser um número maior que 0.")
+    def weight(self, value : str):
+        if not str(value).strip():
+            raise ValueError("O peso não pode ser vazio.")
+        try:
+            value = float(value)
+        except ValueError:
+            raise ValueError("O peso deve ser um número válido.")
+        if value <= 0:
+            raise ValueError("O peso deve ser maior que 0.")
         self._weight = value
 
     # Getter e Setter para 'image'

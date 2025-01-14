@@ -2,35 +2,36 @@ from flet import *
 import csv
 import pandas as pd
 from configs import *
-from classes.user import User
+from database.animal_database import AnimalDatabase
+from src.user import User
 from elements import *
-from utils import load_user_from_session,load_pet_list_from_session
+from session_manager import load_user_from_session
 
 class Menu(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
 
+        self.animal_database = AnimalDatabase()
         self.element = Elements()
         self.padding = Container(height=40)
         self.user = load_user_from_session(self.page)
         self.user_name = Text(f"Olá,")
-
-        self.pet_list = load_pet_list_from_session(self.page)
+        self.has_pet = False
 
         if(self.user):
             self.user_name = Text(f"Olá, {self.user.name}")
         
         self.title = self.element.create_title("Menu Principal")
         self.shop = self.element.create_button("Loja", lambda _: self.page.go('/shop'))
-        self.myPets = self.element.create_button("Meus Pets", self.verify_pet)
+        self.myPets = self.element.create_button("Meus Pets", self.go_pets)
         self.out = self.element.create_button("Sair", self.close_app)
 
     def close_app(self, e):
         self.page.window.close()
 
     def build(self):
-        print()
+        self.verify_pet()
         return Container(
             content=Column(
                 controls=[
@@ -46,15 +47,21 @@ class Menu(UserControl):
             alignment=alignment.center,  
         )
 
+    def go_pets(self,e):
+        if self.has_pet:
+            self.page.go('/pets')
+        else:
+            self.page.go('/pet_register')
+
     
-    def verify_pet(self,e):
-       
+    def verify_pet(self):
+        print("testeee",self.animal_database.get_pet_list_by_user_id(self.user.id_user))
         try:
-            if self.pet_list.empty:
-                self.page.go('/pet_register')
+            if not self.animal_database.get_pet_list_by_user_id(self.user.id_user).empty:
+                self.has_pet = True
             else:
+                self.has_pet = False
                 print("nao vazio")
-                self.page.go('/pets')
 
             return False  
         except FileNotFoundError:
