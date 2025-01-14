@@ -1,6 +1,9 @@
 from flet import *
 from classes.user import User
 from classes.animals import Animal
+from configs import PETS_TABLE_PATH
+from utils import load_user_from_session
+
 
 class PetRegister(UserControl):
     def __init__(self, page):
@@ -8,7 +11,7 @@ class PetRegister(UserControl):
         self.page = page
         self.animal = Animal()
 
-        user_data = page.session.get("user")
+        self.user = load_user_from_session(self.page)
         
         #titulo
         self.title = Text("Cadastre seu bichinho")
@@ -49,6 +52,10 @@ class PetRegister(UserControl):
         self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/menu'))
 
 
+    def get_current_id(self):
+        max_id = max(pd.read_csv(PETS_TABLE_PATH,sep=";")["id_pet"].values)
+        return int(max_id)
+
     def build(self):
         
         return Container(
@@ -72,8 +79,8 @@ class PetRegister(UserControl):
     
     #Insere uma linha de dados em um arquivo CSV no formato de string.
     def insert_data(self, e):
-        
-        line = f"{self.user.id_user},{self.animal.specie.value},{self.animal.name.value},{self.animal.sex.value},{self.animal.castrated.value},{self.animal.race.value},{self.animal.age.value},{self.animal.weight.value}"   
+        next_id = self.get_current_id() + 1
+        line = f"{self.next_id},{self.user.id_user},{self.animal.specie.value},{self.animal.name.value},{self.animal.sex.value},{self.animal.castrated.value},{self.animal.race.value},{self.animal.age.value},{self.animal.weight.value}"   
         
         try:
             # Abre o arquivo em modo de anexar
