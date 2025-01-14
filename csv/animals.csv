@@ -1,3 +1,1 @@
-id_pet;id_user;specie;name;sex;castrated;race;age;weight
-0;1;Peixe;123;Macho;Não;131;231;12;
-1;1;Gato;Preto;Macho;Não;1;23;23
+id_pet;id_user;specie;name;sex;castrated;race;age;weight;image

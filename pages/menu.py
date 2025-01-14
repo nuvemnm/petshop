@@ -3,7 +3,7 @@ import csv
 import pandas as pd
 from configs import *
 from classes.user import User
-from utils import load_user_from_session
+from utils import load_user_from_session,load_pet_list_from_session
 
 class Menu(UserControl):
     def __init__(self, page):
@@ -12,6 +12,8 @@ class Menu(UserControl):
 
         self.user = load_user_from_session(self.page)
         self.user_name = Text(f"Olá,")
+
+        self.pet_list = load_pet_list_from_session(self.page)
 
         if(self.user):
             self.user_name = Text(f"Olá, {self.user.name}")
@@ -25,7 +27,7 @@ class Menu(UserControl):
         self.page.window.close()
 
     def build(self):
-        
+        print()
         return Container(
             content=Column(
                 controls=[
@@ -40,15 +42,11 @@ class Menu(UserControl):
             alignment=alignment.center,  
         )
 
-
-
     
     def verify_pet(self,e):
        
         try:
-            pet_df = pd.read_csv(PETS_TABLE_PATH, delimiter=";")
-            print("Colunas do CSV:", pet_df.columns)
-            if pet_df.loc[pet_df["id_user"] == self.user.id_user].empty:
+            if self.pet_list.empty:
                 self.page.go('/pet_register')
             else:
                 print("nao vazio")
