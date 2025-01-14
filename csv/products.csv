@@ -1,2 +1,4 @@
-name, price, quantity, image
-biscoito, 12, 2, https://m.media-amazon.com/images/I/51kHk4xr-SL._AC_SX679_.jpg
+id_product;name;price;quantity;description;image
+0;Biscoito para cães;999;2;Um biscoito muito saboroso, seu pet vai amar!;https://m.media-amazon.com/images/I/51kHk4xr-SL._AC_SX679_.jpg
+1;Girafinha de pelúcia;20;1;Girafinha de pelúcia da marca squeaky;https://cdn.leroymerlin.com.br/products/brinquedo_cachorro_madog_girafinha_pelucia_pet_elastica_1570433820_70ff_600x600.jpg
+2;Areia gato bill;27;12;Areia higiênica para felinos da marca gato bill;https://acdn.mitiendanube.com/stores/002/163/425/products/design-sem-nome-1-ab80cdf7537f4c348f17160667970717-1024-1024.png

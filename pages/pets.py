@@ -1,5 +1,7 @@
 from flet import *
 import csv
+import pandas as pd
+from configs import *
 from classes.animals import Animal  
 
 class Pets(UserControl):
@@ -14,6 +16,7 @@ class Pets(UserControl):
     def collect_animals(self):
         try:
             self.animals.clear()  # Limpa a lista antes de recarregar os produtos
+            df_pets = pd.read_csv(PETS_TABLE_PATH, delimiter=";")
             with open("csv/animals.csv", mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 next(reader)
