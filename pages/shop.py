@@ -2,21 +2,28 @@ from flet import *
 import pandas as pd
 import csv
 from configs import *
-from classes.product import Product  # Importando a classe Product
+from classes.product import Product
+from dialogs.sucess_dialog import SucessDialog  
+from cart import Shopping_Cart
 
 class Shop(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.products = pd.DataFrame()
+        self.product_list = []
         self.title = Text("Loja",size=32)
+        if not self.page.session.get("cart"):
+            page.session.set("cart", Shopping_Cart())
 
-        self.cart = ElevatedButton(text='Carrinho', on_click=lambda _: self.page.go('/cart')) 
+        self.cart = self.page.session.get("cart")
+
+        self.cart_button = ElevatedButton(text="Carrinho", on_click=lambda _: self.page.go('/cart')
+        )
         self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/menu'))
         
         self.modal_image = Image(width=600, height=400, fit="contain")
         self.modal_title = Text(size=22, weight="bold")
-        self.modal_description = Text(size=16)
+        self.modal_description = Text(size=18)
 
         self.modal = AlertDialog(
             modal=True,
@@ -34,25 +41,51 @@ class Shop(UserControl):
                 ),
             ),
             actions=[
-                Row(
-                    controls=[
-                        ElevatedButton(
-                            text="Adicionar ao Carrinho",
-                            on_click=lambda e: self.add_to_cart(e),
-                            expand=True,
-                            height=100,
+            Row(
+                controls=[
+                    ElevatedButton(
+                        text="Adicionar ao Carrinho",
+                        on_click=lambda e, p=None: self.add_to_cart(p),
+                        expand=True,
+                        height=100,
+                        style=ButtonStyle(
+                            color="white",
+                            bgcolor="green",
+                            shape=RoundedRectangleBorder(20)
                         ),
-                        ElevatedButton(
-                            text="Voltar",
-                            on_click=lambda e: self.hide_modal(e),
-                            expand=True,
-                            height=100,
+                        icon=icons.ADD,
+                    ),
+                    ElevatedButton(
+                        text="Voltar",
+                        on_click=lambda e: self.hide_modal(e),
+                        expand=True,
+                        height=100,
+                        style=ButtonStyle(
+                            color="white",
+                            bgcolor="red",
+                            shape=RoundedRectangleBorder(20)
                         ),
-                    ],
-                    spacing=0,  # Remove o espaçamento entre os botões
-                ),
+                    ),
+                ],
+                spacing=10,
+            ),
             ],
         )
+
+    def add_to_cart(self, product):
+        if self.cart.get_quantity_in_cart(product.id_product) < product.quantity:
+            self.cart.add_product(product)
+            
+            success_dialog = SucessDialog("Item adicionado ao carrinho com sucesso!",product.name,self.page)
+            success_dialog.show()
+
+        else:
+            dlg = AlertDialog(
+                title=Text("Não foi possível adicionar o item ao carrinho"),
+                content=Text("Estamos sem estoque."),
+            )
+            self.page.open(dlg)
+
 
     def hide_modal(self,e):
         # Remove o modal da tela:
@@ -66,17 +99,30 @@ class Shop(UserControl):
 
 
     def on_product_click(self, product):
-        self.modal_image.src = product["image"]
-        self.modal_title.value = product["name"]
-        self.modal_description.value = product["description"]
+        self.product = product
+        self.modal_image.src = product.image
+        self.modal_title.value = product.name
+        self.modal_description.value = product.description
         self.modal.open = True
+        self.modal.actions[0].controls[0].on_click = lambda e: self.add_to_cart(product)
         self.page.update()
 
 
-    def collect_products(self):
+    def load_products(self):
         try:
-            self.products = pd.read_csv(PRODUCTS_TABLE_PATH,sep=";")
-            return self.products
+            products = pd.read_csv(PRODUCTS_TABLE_PATH,sep=";")
+            self.product_list = [
+                Product(
+                    id_product=row["id_product"],
+                    name=row["name"],
+                    price=row["price"],
+                    quantity=row["quantity"],
+                    image=row["image"],
+                    description=row["description"],
+                )
+                for _, row in products.iterrows()
+            ]
+        
         except FileNotFoundError:
             print(f"Erro: Arquivo 'products.csv' não encontrado.")
             return False
@@ -85,29 +131,29 @@ class Shop(UserControl):
             return False
 
     def build(self):
-        self.products = self.collect_products()
-        if self.products.empty:
+        self.products = self.load_products()
+        if self.products:
             return Text("Erro ao carregar produtos.")
         
         cards = []
-        for _, product in self.products.iterrows():
-
+        for product in self.product_list:
             card = GestureDetector(
                 on_tap=lambda e, p=product: self.on_product_click(p),
                 content=Card(
                     content=Container(
                         padding=10,
                         content=Row(
-                            controls=[
+                            controls=[ 
                                 # Imagem do produto (esquerda)
-                                Image(src=product["image"], height=180, width=180, fit="FIT_HEIGHT"),
+                                Image(src=product.image, height=220, width=220, fit="COVER"),
                                 
                                 # Informações do produto (direita)
                                 Column(
                                     [
-                                        Text(product["name"], size=26, weight="bold"),
-                                        Text(f"R$ {product['price']}", size=18),
-                                        Text(f"Quantidade disponível: {product['quantity']}", size=14),
+                                        Container(height=10),
+                                        Text(product.name, size=26, weight="bold"),
+                                        Text(f"R$ {product.price}", size=18),
+                                        Text(f"Quantidade disponível: {product.quantity}", size=14),
                                     ],
                                     alignment="start",  # Alinha à esquerda
                                     spacing=5,
@@ -139,7 +185,7 @@ class Shop(UserControl):
                     product_list,  # Container com os cards
                     Row(
                         controls=[
-                            self.cart,
+                            self.cart_button,
                             self.back,
                         ],
                         alignment="center",  
