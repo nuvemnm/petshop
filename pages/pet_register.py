@@ -13,7 +13,6 @@ class PetRegister(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.animal = Animal()
         self.element = Elements()
 
         self.padding = Container(height=40)
@@ -29,7 +28,7 @@ class PetRegister(UserControl):
         page.overlay.append(self.pick_files_dialog)
 
         # Campos do formulário
-        self.animal.specie = Dropdown(
+        self.specie_input = Dropdown(
             label="Espécie do Animal",
             width=300,
             options=[
@@ -38,8 +37,8 @@ class PetRegister(UserControl):
                 dropdown.Option("Peixe"),
             ],
         )
-        self.animal.name = TextField(label="Nome", width=300)
-        self.animal.sex = Dropdown(
+        self.name_input = TextField(label="Nome", width=300)
+        self.sex_input = Dropdown(
             label="Sexo",
             width=300,
             options=[
@@ -47,7 +46,7 @@ class PetRegister(UserControl):
                 dropdown.Option("Macho"),
             ],
         )
-        self.animal.castrated = Dropdown(
+        self.castrated_input = Dropdown(
             label="Castrado",
             width=300,
             options=[
@@ -55,9 +54,9 @@ class PetRegister(UserControl):
                 dropdown.Option("Não"),
             ],
         )
-        self.animal.race = TextField(label="Raça", width=300)
-        self.animal.age = TextField(label="Idade", width=300)
-        self.animal.weight = TextField(label="Peso(kg)", width=300)
+        self.race_input = TextField(label="Raça", width=300)
+        self.age_input = TextField(label="Idade", width=300)
+        self.weight_input = TextField(label="Peso(kg)", width=300)
         
         # Botões
         self.upload_button = ElevatedButton(
@@ -66,7 +65,7 @@ class PetRegister(UserControl):
             on_click=lambda _: self.pick_files_dialog.pick_files(allow_multiple=False),
             width = 300, height = 50, style=ButtonStyle(shape=RoundedRectangleBorder(radius=10))
         )
-        self.register = self.element.create_button("Finalizar Cadastro", self.insert_data)
+        self.register = self.element.create_button("Finalizar Cadastro", self.verify_data)
         self.back = self.element.create_button("Voltar", lambda _: self.page.go('/pets'))
 
     def get_current_id(self):
@@ -91,13 +90,13 @@ class PetRegister(UserControl):
                 controls=[
                     self.title,
                     self.padding,
-                    self.animal.specie,
-                    self.animal.name,
-                    self.animal.sex,
-                    self.animal.castrated,
-                    self.animal.race,
-                    self.animal.age,
-                    self.animal.weight,
+                    self.specie_input,
+                    self.name_input,
+                    self.sex_input,
+                    self.castrated_input,
+                    self.race_input,
+                    self.age_input,
+                    self.weight_input,
                     self.padding,
                     self.upload_button,
                     self.register,
@@ -108,37 +107,47 @@ class PetRegister(UserControl):
             alignment=alignment.center,
         )
     
-    def insert_data(self, e):
-        # Verifica se há um arquivo selecionado
-        if not self.selected_file_path:
-            print("Nenhum arquivo foi selecionado!")
-            return
-        
+    def notify_user(self,message):
+        dlg = AlertDialog(
+            title=Text("Não foi possível cadastras o animal"),
+            content=Text(message),
+        )
+        self.page.open(dlg)
+
+    def verify_data(self, e):
         try:
-            # Cria o diretório se ele não existir
+            next_id = self.get_current_id() + 1
+
             dest_folder = os.path.join("images", "pets")
             os.makedirs(dest_folder, exist_ok=True)
 
             # Define o nome do arquivo e move para a pasta de destino
             file_name = os.path.basename(self.selected_file_path)
             dest_path = os.path.join(dest_folder, file_name)
-            print(dest_path)
+            
             shutil.copy(self.selected_file_path, dest_path)
-            print("teste 1")
-            # Obtem o próximo ID
-            next_id = self.get_current_id() + 1
-            print("teste 2")
-            # Cria a linha de dados
-            line = f"{next_id};{self.user.id_user};{self.animal.specie.value};{self.animal.name.value};{self.animal.sex.value};{self.animal.castrated.value};{self.animal.race.value};{self.animal.age.value};{self.animal.weight.value};{dest_path}"
-            print(line)
+
+            pet = Animal(next_id, self.user.id_user, self.specie_input.value, self.name_input.value, self.sex_input.value, self.castrated_input.value, self.race_input.value, self.age_input.value, self.weight_input.value, dest_path)
+            self.insert_data(pet)
+
+        except ValueError as ve:
+            self.notify_user(ve)
+
+
+    def insert_data(self, animal):
+        print(animal.age)
+        line = f"{animal.id_pet};{animal.id_user};{animal.specie};{animal.name};{animal.sex};{animal.castrated};{animal.race};{animal.age};{animal.weight};{animal.image}"
+        
+        try:
+
             # Insere a linha no CSV
             with open(PETS_TABLE_PATH, 'a', encoding='utf-8') as f:
                 f.write(line + '\n')
 
-            print(f"Cadastro realizado com sucesso: {line}")
-            save_user_pets_to_session(self.page, self.user.id_user)
+                print(f"Cadastro realizado com sucesso: {line}")
+                save_user_pets_to_session(self.page, self.user.id_user)
 
-            self.page.go('/menu')
+                self.page.go('/menu')
 
         except Exception as ex:
             print(f"Erro ao inserir os dados: {ex}")

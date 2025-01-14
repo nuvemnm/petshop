@@ -53,7 +53,6 @@ class Register(UserControl):
     
     def verify_data(self, e):
         if self.is_name_taken(self.input_name.value):
-            print("1")
             self.notify_user("O nome de usuário já está em uso.")
             return
         try:
