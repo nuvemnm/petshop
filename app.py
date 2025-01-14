@@ -18,6 +18,6 @@ def main(page: Page):
 
     # Configuração inicial
     page.on_route_change = route_change
-    page.go('/') 
+    page.go('/pet_register') 
 
 app(target=main)

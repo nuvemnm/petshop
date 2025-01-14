@@ -1,15 +1,18 @@
 from flet import *
 from utils import *
 from pages.cart import *
+from elements import *
 
 class Payment(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
 
+        self.element = Elements()
+
         self.user = load_user_from_session(self.page)
         self.image_path = "images/especial/Untitled.png"  # Substitua pelo caminho da imagem
-        self.title = Text("Pagamento", size = 28)
+        self.title = self.element.create_title("Pagamento")
         self.input_name = TextField(label="Nome de usuário", width=300)
         self.input_address = TextField(label="Endereço", width=300)
 
@@ -36,8 +39,8 @@ class Payment(UserControl):
         self.dynamic_container = Container()
 
         # Botão de voltar
-        self.pay = ElevatedButton(text='Finalizar Pagamento', on_click = self.verify_data, width = 300, height = 50, style=ButtonStyle(shape=RoundedRectangleBorder(radius=10)))
-        self.back = ElevatedButton(text='Voltar', on_click=lambda _: self.page.go('/wash'), width = 300, height = 50, style=ButtonStyle(shape=RoundedRectangleBorder(radius=10)))
+        self.pay = self.element.create_button("Finalizar Pagamento", self.verify_data)
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/wash'))
 
     def radiogroup_changed(self, e):
         # Limpa os controles existentes do contêiner dinâmico
