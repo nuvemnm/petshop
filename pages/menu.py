@@ -24,7 +24,9 @@ class Menu(UserControl):
         
         self.title = self.element.create_title("Menu Principal")
         self.shop = self.element.create_button("Loja", lambda _: self.page.go('/shop'))
-        self.myPets = self.element.create_button("Meus Pets", self.go_pets)
+
+        self.myPets = self.element.create_button("Meus Pets", self.verify_pet)
+        self.my_purchases = self.element.create_button("Minhas Compras",lambda _: self.page.go('/purchases'))
         self.out = self.element.create_button("Sair", self.close_app)
 
     def close_app(self, e):
@@ -40,6 +42,7 @@ class Menu(UserControl):
                     self.padding,
                     self.shop,
                     self.myPets,
+                    self.my_purchases,
                     self.out         
                 ],
                 horizontal_alignment=CrossAxisAlignment.CENTER,  
