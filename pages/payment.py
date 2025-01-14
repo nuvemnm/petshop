@@ -2,6 +2,7 @@ from flet import *
 from utils import *
 from pages.cart import *
 from elements import *
+from configs import *
 
 class Payment(UserControl):
     def __init__(self, page):
@@ -27,7 +28,6 @@ class Payment(UserControl):
         if self.user:
             self.input_name = TextField(label="Nome de usuário", width=300, value=self.user.name,read_only=True,text_style=TextStyle(color=colors.GREY))
             self.input_address = TextField(label="Endereço", width=300,value=self.user.address,read_only=True,text_style=TextStyle(color=colors.GREY))
-
 
         self.number_card = TextField(label="Número do Cartão", width=300)
         self.cvv = TextField(label="CVV", width=140)
@@ -126,8 +126,90 @@ class Payment(UserControl):
 
         # Todos os campos foram validados com sucesso
         print("Todos os campos foram preenchidos corretamente!")
+        self.insert_purchase()
+        if self.payment_info["origin_page"] == "cart":
+            self.decrease_item()
+
         self.page.go('/menu')
         return True  # Retorna True para indicar que a validação foi bem-sucedida
+        
+    def get_current_id(self):
+        df = pd.read_csv(PURCHASES_TABLE_PATH, sep=";")
+        
+        if df.empty:
+            return 0
+        
+        max_id = df["id_purchase"].max() 
+        return int(max_id) if pd.notna(max_id) else 0
+
+
+    def insert_purchase(self):
+        if self.payment_info["origin_page"] == "cart":
+            purchases_df = pd.read_csv(PURCHASES_TABLE_PATH, sep=";")
+
+            new_rows = []
+            for item in self.payment_info["products"].itertuples(index=False):
+                # Repetir o item com base na quantidade
+                for _ in range(int(item.quantity)):  # A quantidade é usada para determinar a repetição
+                    new_rows.append({
+                        "id_purchase":self.get_current_id()+1,
+                        "id_product": item.id_product,
+                        "id_user":self.user.id_user,
+                        "name": item.name,
+                        "price": item.price,
+                        "date": pd.to_datetime("today").strftime("%Y-%m-%d"),  # Data de compra
+                        "description": item.description,
+                        "image": item.image,
+                        "status": "Preparando pedido"
+                    })
+            # Criar um DataFrame para as novas linhas
+            new_df = pd.DataFrame(new_rows)
+
+            # Adicionar as novas linhas ao DataFrame existente
+            purchases_df = pd.concat([purchases_df, new_df], ignore_index=True)
+
+            # Salvar o DataFrame atualizado no CSV, preservando as informações existentes
+            purchases_df.to_csv(PURCHASES_TABLE_PATH, sep=";", index=False)
+        
+        elif self.payment_info["origin_page"] == "wash":
+            print("INSERINDO WASH")
+            item = self.payment_info["products"]
+            purchases_df = pd.read_csv(PURCHASES_TABLE_PATH, sep=";")
+            new_rows = []
+            new_rows.append({
+                "id_purchase":self.get_current_id()+1,
+                "id_service": item["id_service"],
+                "id_user":self.user.id_user,
+                "name": item["name"],
+                "price": item["price"],
+                "date": pd.to_datetime("today").strftime("%Y-%m-%d"),  # Data de compra
+                "status": "Aguardando data"
+            })
+            # Criar um DataFrame para as novas linhas
+            new_df = pd.DataFrame(new_rows)
+
+            # Adicionar as novas linhas ao DataFrame existente
+            purchases_df = pd.concat([purchases_df, new_df], ignore_index=True)
+
+            # Salvar o DataFrame atualizado no CSV, preservando as informações existentes
+            purchases_df.to_csv(PURCHASES_TABLE_PATH, sep=";", index=False)
+
+
+    def decrease_item(self):
+        products_df = pd.read_csv(PRODUCTS_TABLE_PATH, sep=";")
+        
+        if not products_df.empty:
+            for item in self.payment_info["products"].itertuples(index=False):
+                product_index = products_df[products_df["id_product"] == item.id_product].index
+                
+                if len(product_index) > 0:
+                    # Reduzir a quantidade do produto encontrado
+                    products_df.at[product_index[0], "quantity"] -= 1
+                    
+            # Salvar as alterações de volta no arquivo CSV
+            products_df.to_csv(PRODUCTS_TABLE_PATH, sep=";", index=False)
+        else:
+            print("Não há produtos no inventário.")
 
 
     def build(self):
