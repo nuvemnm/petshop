@@ -2,14 +2,14 @@ from flet import *
 import pandas as pd
 
 from configs import SERVICES_TABLE_PATH
-from list import Scrollable_list
+from scrollable_list import Scrollable_list
 from modal import ItemDetailsModal
 
 class Banho(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.title = Text("Banho e Tosa")
+        self.title = Text("Banho e Tosa",size=32)
         
         self.payment = ElevatedButton(text = 'Finalizar Pagamento', on_click = lambda _: self.page.go('/pets')) 
         self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/pets')) 

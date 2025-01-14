@@ -47,6 +47,7 @@ class ItemDetailsModal(UserControl):
             title=Text(self.item[self.title_col_name], weight="bold"),
             content=Container(
                 padding=20,
+                width=400,
                 content=Column(
                     controls=content_controls,
                     horizontal_alignment=CrossAxisAlignment.CENTER,
@@ -55,9 +56,15 @@ class ItemDetailsModal(UserControl):
             ),
             actions=[
                 Row(
-                    controls=[
-                        *self.buttons_list,
-                    ],
+                controls=[
+                    *[ElevatedButton(
+                        text=btn.text,
+                        on_click=btn.on_click,
+                        expand=True,
+                        height=50,
+                    ) for btn in self.buttons_list],
+                ],
+                alignment="center",
                 ),
                 Container(height=20),  # Remove o espaçamento entre os botões
                 Row(
