@@ -7,14 +7,27 @@ class Payment(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-
         self.element = Elements()
 
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/menu'))
+
         self.user = load_user_from_session(self.page)
-        self.image_path = "images/especial/Untitled.png"  # Substitua pelo caminho da imagem
+
+        self.payment_info = self.page.session.get("payment_info")
+        if self.payment_info:
+            self.price = self.element.create_title(f"Subtotal: R$ {self.payment_info['price']}")
+
+            self.back = self.element.create_button("Voltar", lambda _: self.page.go(f'/{self.payment_info["origin_page"]}'))
+            
+        self.image_path = "images/especial/Untitled.png" 
         self.title = self.element.create_title("Pagamento")
         self.input_name = TextField(label="Nome de usuário", width=300)
         self.input_address = TextField(label="Endereço", width=300)
+        
+        if self.user:
+            self.input_name = TextField(label="Nome de usuário", width=300, value=self.user.name,read_only=True,text_style=TextStyle(color=colors.GREY))
+            self.input_address = TextField(label="Endereço", width=300,value=self.user.address,read_only=True,text_style=TextStyle(color=colors.GREY))
+
 
         self.number_card = TextField(label="Número do Cartão", width=300)
         self.cvv = TextField(label="CVV", width=140)
@@ -40,7 +53,6 @@ class Payment(UserControl):
 
         # Botão de voltar
         self.pay = self.element.create_button("Finalizar Pagamento", self.verify_data)
-        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/wash'))
 
     def radiogroup_changed(self, e):
         # Limpa os controles existentes do contêiner dinâmico
@@ -119,10 +131,12 @@ class Payment(UserControl):
 
 
     def build(self):
+        print(self.payment_info)
         return Container(
             content=Column(
                 controls=[
                     self.title,
+                    self.price,
                     self.input_name,
                     self.input_address,
                     self.radio_input,  # RadioGroup centralizado
