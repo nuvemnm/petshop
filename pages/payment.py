@@ -23,6 +23,11 @@ class Payment(UserControl):
         self.title = self.element.create_title("Pagamento")
         self.input_name = TextField(label="Nome de usuário", width=300)
         self.input_address = TextField(label="Endereço", width=300)
+        
+        if self.user:
+            self.input_name = TextField(label="Nome de usuário", width=300, value=self.user.name,read_only=True,text_style=TextStyle(color=colors.GREY))
+            self.input_address = TextField(label="Endereço", width=300,value=self.user.address,read_only=True,text_style=TextStyle(color=colors.GREY))
+
 
         self.number_card = TextField(label="Número do Cartão", width=300)
         self.cvv = TextField(label="CVV", width=140)
