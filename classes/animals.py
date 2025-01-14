@@ -72,7 +72,7 @@ class Animal:
     @castrated.setter
     def castrated(self, value: str):
         if not isinstance(value, str):
-            raise ValueError("O status de castração deve ser verdadeiro (True) ou falso (False).")
+            raise ValueError("O status de castração deve ser preenchido.")
         self._castrated = value
 
     # Getter e Setter para 'race'
