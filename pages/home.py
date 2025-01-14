@@ -1,14 +1,16 @@
 from flet import *
+from elements import *
 
 class Home(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
 
-        self.title = Text("Página Inicial")
-        self.login = ElevatedButton(text = 'Login', on_click = lambda _: self.page.go('/login'))  
-        self.register = ElevatedButton(text = 'Cadastrar', on_click = lambda _: self.page.go('/register')) 
-        self.out = ElevatedButton(text='Sair', on_click=self.close_app)    
+        self.element = Elements()
+        self.title = self.element.create_title("Página Inicial")
+        self.login = self.element.create_button("Login", lambda _: self.page.go('/login'))
+        self.register = self.element.create_button("Cadastrar", lambda _: self.page.go('/register')) 
+        self.out = self.element.create_button("Sair", self.close_app)   
 
 
     def close_app(self, e):
