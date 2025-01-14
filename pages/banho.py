@@ -1,6 +1,6 @@
 from flet import *
 import pandas as pd
-
+from elements import *
 from configs import SERVICES_TABLE_PATH
 from scrollable_list import Scrollable_list
 from modal import ItemDetailsModal
@@ -9,10 +9,12 @@ class Banho(UserControl):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.title = Text("Banho e Tosa",size=32)
-        
-        self.payment = ElevatedButton(text = 'Finalizar Pagamento', on_click = lambda _: self.page.go('/pets')) 
-        self.back = ElevatedButton(text = 'Voltar', on_click = lambda _: self.page.go('/pets')) 
+        self.element = Elements()
+
+        self.title = self.element.create_title("Banho e Tosa")
+         
+        self.payment = self.element.create_button("Finalizar Pagamento", lambda _: self.page.go('/payment')) 
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/pets'))
 
         self.selected_item = None
         self.modal = None

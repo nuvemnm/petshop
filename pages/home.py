@@ -7,6 +7,7 @@ class Home(UserControl):
         self.page = page
 
         self.element = Elements()
+        self.padding = Container(height=40)
         self.title = self.element.create_title("Página Inicial")
         self.login = self.element.create_button("Login", lambda _: self.page.go('/login'))
         self.register = self.element.create_button("Cadastrar", lambda _: self.page.go('/register')) 
@@ -22,6 +23,7 @@ class Home(UserControl):
             content=Column(
                 controls=[
                     self.title,
+                    self.padding,
                     self.login,
                     self.register,
                     self.out

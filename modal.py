@@ -31,6 +31,8 @@ class ItemDetailsModal(UserControl):
                         on_click=lambda _: self.on_close(),
                         expand=True,
                         height=50,
+                        weight = 300,
+                        style=ButtonStyle(shape=RoundedRectangleBorder(radius=10)),
                     )
                 ],
             )
@@ -62,6 +64,8 @@ class ItemDetailsModal(UserControl):
                         on_click=btn.on_click,
                         expand=True,
                         height=50,
+                        width = 300, 
+                        style=ButtonStyle(shape=RoundedRectangleBorder(radius=10)),
                     ) for btn in self.buttons_list],
                 ],
                 alignment="center",
@@ -74,6 +78,8 @@ class ItemDetailsModal(UserControl):
                             on_click=lambda _: self.on_close(),
                             expand=True,
                             height=50,
+                            width = 300, 
+                            style = ButtonStyle(shape=RoundedRectangleBorder(radius=10)),
                         ),
                     ],
                 ),
