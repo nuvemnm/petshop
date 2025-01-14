@@ -11,6 +11,11 @@ class UserDatabase:
         user_names = pd.read_csv(self.table_path,sep=";")["name"].values
         return (name in user_names)
 
+    def get_user_with_username_and_password(self,username,password):
+        users = pd.read_csv(USERS_TABLE_PATH,sep=";")
+        user_match = users[(users["name"] == username) & (users["password"] == password)]
+        return user_match
+
     def get_current_id(self):
         max_id = max(pd.read_csv(USERS_TABLE_PATH,sep=";")["id_user"].values)
         return int(max_id)

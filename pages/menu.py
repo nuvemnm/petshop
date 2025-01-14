@@ -55,7 +55,6 @@ class Menu(UserControl):
 
     
     def verify_pet(self):
-        print("testeee",self.animal_database.get_pet_list_by_user_id(self.user.id_user))
         try:
             if not self.animal_database.get_pet_list_by_user_id(self.user.id_user).empty:
                 self.has_pet = True
