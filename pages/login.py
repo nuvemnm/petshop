@@ -48,7 +48,6 @@ class Login(UserControl):
     def verify_data(self, e):
         try:
             user_match = self.user_database.get_user_with_username_and_password(self.input_name.value,self.input_password.value)
-
             if user_match.empty:
                 dlg = AlertDialog(
                 title=Text("Não foi possível fazer login."),

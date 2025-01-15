@@ -12,7 +12,7 @@ class UserDatabase:
         return (name in user_names)
 
     def get_user_with_username_and_password(self,username,password):
-        users = pd.read_csv(USERS_TABLE_PATH,sep=";")
+        users = pd.read_csv(USERS_TABLE_PATH, sep=";", dtype={"cpf": str})
         user_match = users[(users["name"] == username) & (users["password"] == password)]
         return user_match
 

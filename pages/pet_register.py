@@ -60,7 +60,7 @@ class PetRegister(UserControl):
             width=300, height=50, style=ButtonStyle(shape=RoundedRectangleBorder(radius=10))
         )
         self.register = self.element.create_button("Finalizar Cadastro", self.verify_data)
-        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/home'))
+        self.back = self.element.create_button("Voltar", lambda _: self.page.go('/menu'))
 
 
         self.user = load_user_from_session(self.page)
@@ -139,7 +139,7 @@ class PetRegister(UserControl):
             self.specie_input.value, 
             self.name_input.value, 
             self.sex_input.value, 
-            self.castrated_input.value == "Sim", 
+            1 if self.castrated_input.value == "Sim" else 0,
             self.race_input.value, 
             self.age_input.value, 
             self.weight_input.value, 
