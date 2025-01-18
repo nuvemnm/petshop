@@ -17,7 +17,10 @@ class UserDatabase:
         return user_match
 
     def get_current_id(self):
-        max_id = max(pd.read_csv(USERS_TABLE_PATH,sep=";")["id_user"].values)
+        users_info = pd.read_csv(USERS_TABLE_PATH,sep=";")
+        if (users_info.empty):
+            return 0
+        max_id = max(users_info["id_user"].values)
         return int(max_id)
     
     def insert_data(self, user):

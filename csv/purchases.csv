@@ -1,1 +1,5 @@
 id_purchase;id_product;id_user;id_service;name;price;date;description;image;status
+1;2.0;1;;Areia gato bill;27;2025-01-18;Areia higiênica para felinos da marca gato bill;https://acdn.mitiendanube.com/stores/002/163/425/products/design-sem-nome-1-ab80cdf7537f4c348f17160667970717-1024-1024.png;Preparando pedido
+2;2.0;1;;Areia gato bill;27;2025-01-18;Areia higiênica para felinos da marca gato bill;https://acdn.mitiendanube.com/stores/002/163/425/products/design-sem-nome-1-ab80cdf7537f4c348f17160667970717-1024-1024.png;Preparando pedido
+3;1.0;1;;Girafinha de pelúcia;20;2025-01-18;Girafinha de pelúcia da marca squeaky;https://cdn.leroymerlin.com.br/products/brinquedo_cachorro_madog_girafinha_pelucia_pet_elastica_1570433820_70ff_600x600.jpg;Preparando pedido
+4;;1;2.0;banho e tosa;120;2025-01-18;;;Aguardando data
