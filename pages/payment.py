@@ -91,7 +91,7 @@ class Payment(UserControl):
                 content=Column(
                     controls=[
                         Text("Escaneie o QRCode", size=24, text_align="center"),
-                        Image(src=self.image_path, width=300, height=300, fit="contain"),
+                        Image(src=self.image_path, width=150, height=150, fit="contain"),
                     ],
                     horizontal_alignment=CrossAxisAlignment.CENTER,  # Centraliza horizontalmente os elementos da Column
                 ),

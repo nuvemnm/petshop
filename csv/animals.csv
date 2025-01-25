@@ -1,2 +1,6 @@
 id_pet;id_user;specie;name;sex;castrated;race;age;weight;image
 1;1;Gato;Luna;Fêmea;1;Tricolor;5;8.0;images\pets\75b05777e215b02bf444d5f6d7470807.jpg
+2;2;Gato;javascript;Macho;1;Siamês;2;8.0;images\pets\gato-siames-capa.png
+3;2;Cachorro;bola;Macho;1;cão de crista chinês;4;5.0;images\pets\cachorro_feio.jpg
+4;2;Gato;Bolete;Macho;0;Siames;22;4.0;images\pets\gato-siames-capa.png
+5;3;Cachorro;thor;Macho;1;bulldog francês;1;15.0;images\pets\cachorro_feio.jpg
